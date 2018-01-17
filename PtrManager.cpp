@@ -1,14 +1,6 @@
 #include "PtrManager.h"
 #include "Ptr.h"
 
-PtrManager::PtrManager(){
-
-}
-
-PtrManager::~PtrManager(){
-
-}
-
 PtrManager *PtrManager::get(){
 	static PtrManager *instance = nullptr;
 	if(!instance){
@@ -17,8 +9,8 @@ PtrManager *PtrManager::get(){
 	return instance;
 }
 
-Counter *PtrManager::registerType(void *type){
-	Counter *counter = nullptr;
+Counter* PtrManager::registerType(void *type){
+	Counter* counter = nullptr;
 
 	for(const TypeRegistrationInfo &info : registeredTypes){
 		if(info.type == type){
@@ -29,19 +21,13 @@ Counter *PtrManager::registerType(void *type){
 
 	if(!counter){
 		counter = new Counter();
-
-		TypeRegistrationInfo info;
-		info.type = type;
-		info.counter = counter;
-
-		registeredTypes.push_back(info);
+		registeredTypes.push_back({type, counter});
 	}
-
 
 	return counter;
 }
 
-void PtrManager::unregisterType(void *type){
+void PtrManager::unregisterType(void* type){
 	TypeRegistrationInfo *registeredInfo = nullptr;
 	for(TypeRegistrationInfo &info : registeredTypes){
 		if(info.type == type){
