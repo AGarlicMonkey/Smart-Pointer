@@ -169,10 +169,6 @@ inline void SharedPtr<T>::free(){
 
 //WEAK
 template<typename T>
-inline WeakPtr<T>::WeakPtr(){
-}
-
-template<typename T>
 inline WeakPtr<T>::WeakPtr(const WeakPtr<T>& ptr){
 	init(ptr.object, ptr.ref);
 }

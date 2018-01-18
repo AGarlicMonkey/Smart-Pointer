@@ -98,7 +98,7 @@ template<typename T>
 class WeakPtr : public  BasePtr<T>{
 	//FUNCTIONS
 public:
-	explicit WeakPtr();
+	explicit WeakPtr() = default;
 
 	WeakPtr(const WeakPtr<T>& ptr);
 	WeakPtr(const SharedPtr<T>& ptr);
