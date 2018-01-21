@@ -125,7 +125,7 @@ template<typename T>
 inline SharedPtr<T> &SharedPtr<T>::operator=(T* inObject){
 	if(object != inObject){
 		free(); 
-		if(object){
+		if(inObject){
 			init(inObject);
 		}
 	}
