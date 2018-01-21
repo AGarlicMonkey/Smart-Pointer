@@ -70,11 +70,6 @@ inline BasePtr<T>::operator bool() const{
 
 //SHARED
 template<typename T>
-inline SharedPtr<T>::SharedPtr(){
-	init(nullptr);
-}
-
-template<typename T>
 inline SharedPtr<T>::SharedPtr(T* inObject){
 	if(inObject){
 		init(inObject);

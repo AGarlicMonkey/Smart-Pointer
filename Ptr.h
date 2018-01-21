@@ -37,11 +37,10 @@ class BasePtr{
 	template<typename T> friend class WeakPtr;
 	template<typename U> friend class WeakPtr;
 
-
 	//VARIABLES
 protected:
-	T* object		= nullptr;
-	Counter* ref	= nullptr;
+	T* object	 = nullptr;
+	Counter* ref = nullptr;
 
 	//FUNCTIONS	
 public:
@@ -71,7 +70,7 @@ template<typename T>
 class SharedPtr : public BasePtr<T>{
 	//FUNCTIONS
 public:
-	explicit SharedPtr();
+	explicit SharedPtr() = default;
 	explicit SharedPtr(T* inObject);
 
 	SharedPtr(const SharedPtr<T>& ptr);
@@ -114,7 +113,7 @@ public:
 	WeakPtr<T> &operator=(const SharedPtr<T>& ptr);
 
 private:
-	void init(T* inObject, Counter* inRef = nullptr);
+	void init(T* inObject, Counter* inRef);
 	void free();
 };
 
