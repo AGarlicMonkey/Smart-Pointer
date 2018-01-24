@@ -46,7 +46,7 @@ protected:
 public:
 	virtual ~BasePtr() = default;
 
-	T *get();
+	T *get() const;
 	bool isValid() const;
 
 	bool operator==(const T* inObject);
@@ -84,9 +84,9 @@ public:
 	T *operator->() const;
 	T &operator*() const;
 
-	SharedPtr<T> &operator=(T *inObject);
-	SharedPtr<T> &operator=(const SharedPtr<T>& ptr);
-	SharedPtr<T> &operator=(const WeakPtr<T>& ptr);
+	SharedPtr<T>& operator=(T *inObject);
+	SharedPtr<T>& operator=(const SharedPtr<T>& ptr);
+	SharedPtr<T>& operator=(const WeakPtr<T>& ptr);
 
 private:
 	void init(T* inObject, Counter* inRef = nullptr);
@@ -109,8 +109,8 @@ public:
 
 	SharedPtr<T> pin();
 
-	WeakPtr<T> &operator=(const WeakPtr<T>& ptr);
-	WeakPtr<T> &operator=(const SharedPtr<T>& ptr);
+	WeakPtr<T>& operator=(const WeakPtr<T>& ptr);
+	WeakPtr<T>& operator=(const SharedPtr<T>& ptr);
 
 private:
 	void init(T* inObject, Counter* inRef);

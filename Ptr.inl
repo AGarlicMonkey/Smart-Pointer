@@ -1,6 +1,6 @@
 //BASE
 template<typename T>
-inline T* BasePtr<T>::get(){
+inline T* BasePtr<T>::get() const{
 	return isValid() ? object : nullptr;
 }
 
