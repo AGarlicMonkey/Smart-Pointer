@@ -49,6 +49,8 @@ public:
 	T *get() const;
 	bool isValid() const;
 
+	void reset();
+
 	bool operator==(const T* inObject);
 	bool operator==(const SharedPtr<T>& ptr);
 	bool operator==(const WeakPtr<T>& ptr);
@@ -64,6 +66,9 @@ public:
 	template<typename U> bool operator!=(const WeakPtr<U>& ptr);
 
 	explicit operator bool() const;
+
+protected:
+	virtual void free() = 0;
 };
 
 template<typename T>
@@ -88,9 +93,11 @@ public:
 	SharedPtr<T>& operator=(const SharedPtr<T>& ptr);
 	SharedPtr<T>& operator=(const WeakPtr<T>& ptr);
 
+protected:
+	virtual void free() override;
+
 private:
 	void init(T* inObject, Counter* inRef = nullptr);
-	void free();
 };
 
 template<typename T>
@@ -112,9 +119,11 @@ public:
 	WeakPtr<T>& operator=(const WeakPtr<T>& ptr);
 	WeakPtr<T>& operator=(const SharedPtr<T>& ptr);
 
+protected:
+	virtual void free() override;
+
 private:
 	void init(T* inObject, Counter* inRef);
-	void free();
 };
 
 #include "Ptr.inl"

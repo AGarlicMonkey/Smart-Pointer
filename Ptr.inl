@@ -1,4 +1,4 @@
-//BASE
+/////////BASE
 template<typename T>
 inline T* BasePtr<T>::get() const{
 	return isValid() ? object : nullptr;
@@ -7,6 +7,11 @@ inline T* BasePtr<T>::get() const{
 template<typename T>
 inline bool BasePtr<T>::isValid() const{
 	return ref ? ref->check() > 0 ? object != nullptr : false : false;
+}
+
+template<typename T>
+inline void BasePtr<T>::reset(){
+	free();
 }
 
 template<typename T>
@@ -68,7 +73,7 @@ inline BasePtr<T>::operator bool() const{
 	return isValid();
 }
 
-//SHARED
+/////////SHARED
 template<typename T>
 inline SharedPtr<T>::SharedPtr(T* inObject){
 	if(inObject){
@@ -153,19 +158,6 @@ inline SharedPtr<T>& SharedPtr<T>::operator=(const WeakPtr<T>& ptr){
 }
 
 template<typename T>
-inline void SharedPtr<T>::init(T* inObject, Counter* inRef){
-	object = inObject;
-	if(inRef){
-		ref = inRef;
-	} else{
-		if(PtrManager* manager = PtrManager::get()){
-			ref = manager->registerType(static_cast<void*>(object));
-		}
-	}
-	ref->grab();
-}
-
-template<typename T>
 inline void SharedPtr<T>::free(){
 	if(ref && ref->release() == 0){
 		if(ref->fullCheck() == 0){
@@ -180,7 +172,20 @@ inline void SharedPtr<T>::free(){
 	ref = nullptr;
 }
 
-//WEAK
+template<typename T>
+inline void SharedPtr<T>::init(T* inObject, Counter* inRef){
+	object = inObject;
+	if(inRef){
+		ref = inRef;
+	} else{
+		if(PtrManager* manager = PtrManager::get()){
+			ref = manager->registerType(static_cast<void*>(object));
+		}
+	}
+	ref->grab();
+}
+
+/////////WEAK
 template<typename T>
 inline WeakPtr<T>::WeakPtr(const WeakPtr<T>& ptr){
 	if(ptr.isValid()){
@@ -242,15 +247,6 @@ inline WeakPtr<T>& WeakPtr<T>::operator=(const SharedPtr<T>& ptr){
 }
 
 template<typename T>
-inline void WeakPtr<T>::init(T* inObject, Counter* inRef){
-	object = inObject;
-	if(inRef){
-		ref = inRef;
-		ref->weakGrab();
-	}
-}
-
-template<typename T>
 inline void WeakPtr<T>::free(){
 	if(ref && ref->weakRelease() == 0){
 		if(ref->fullCheck() == 0){
@@ -262,4 +258,13 @@ inline void WeakPtr<T>::free(){
 	}
 	object = nullptr;
 	ref = nullptr;
+}
+
+template<typename T>
+inline void WeakPtr<T>::init(T* inObject, Counter* inRef){
+	object = inObject;
+	if(inRef){
+		ref = inRef;
+		ref->weakGrab();
+	}
 }
