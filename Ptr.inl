@@ -16,56 +16,56 @@ inline void BasePtr<T>::reset(){
 
 template<typename T>
 inline bool BasePtr<T>::operator==(const T* inObject){
-	return object == inObject;
+	return get() == inObject;
 }
 
 template<typename T>
 inline bool BasePtr<T>::operator==(const SharedPtr<T>& ptr){
-	return object == ptr.object;
+	return get() == ptr.object;
 }
 
 template<typename T>
 inline bool BasePtr<T>::operator==(const WeakPtr<T>& ptr){
-	return object == ptr.object;
+	return get() == ptr.object;
 }
 
 template<typename T>
 inline bool BasePtr<T>::operator!=(const T* inObject){
-	return object != inObject;
+	return get() != inObject;
 }
 
 template<typename T>
 inline bool BasePtr<T>::operator!=(const SharedPtr<T>& ptr){
-	return object != ptr.object;
+	return get() != ptr.object;
 }
 
 template<typename T>
 inline bool BasePtr<T>::operator!=(const WeakPtr<T>& ptr){
-	return object != ptr.object;
+	return get() != ptr.object;
 }
 
 template<typename T>
 template<typename U>
 inline bool BasePtr<T>::operator==(const SharedPtr<U>& ptr){
-	return object == ptr.object;
+	return get() == ptr.object;
 }
 
 template<typename T>
 template<typename U>
 inline bool BasePtr<T>::operator==(const WeakPtr<U>& ptr){
-	return object == ptr.object;
+	return get() == ptr.object;
 }
 
 template<typename T>
 template<typename U>
 inline bool BasePtr<T>::operator!=(const SharedPtr<U>& ptr){
-	return object != ptr.object;
+	return get() != ptr.object;
 }
 
 template<typename T>
 template<typename U>
 inline bool BasePtr<T>::operator!=(const WeakPtr<U>& ptr){
-	return object != ptr.object;
+	return get() != ptr.object;
 }
 
 template<typename T>
