@@ -1,6 +1,6 @@
 //BASE
 template<typename T>
-inline T *BasePtr<T>::get(){
+inline T* BasePtr<T>::get(){
 	return isValid() ? object : nullptr;
 }
 
@@ -112,17 +112,17 @@ inline SharedPtr<T>::~SharedPtr(){
 }
 
 template<typename T>
-inline T *SharedPtr<T>::operator->() const{
-	return object;
+inline T* SharedPtr<T>::operator->() const{
+	return get();
 }
 
 template<typename T>
-inline T &SharedPtr<T>::operator*() const{
-	return *object;
+inline T& SharedPtr<T>::operator*() const{
+	return *get();
 }
 
 template<typename T>
-inline SharedPtr<T> &SharedPtr<T>::operator=(T* inObject){
+inline SharedPtr<T>& SharedPtr<T>::operator=(T* inObject){
 	if(object != inObject){
 		free(); 
 		if(inObject){
@@ -133,7 +133,7 @@ inline SharedPtr<T> &SharedPtr<T>::operator=(T* inObject){
 }
 
 template<typename T>
-inline SharedPtr<T> &SharedPtr<T>::operator=(const SharedPtr<T>& ptr){
+inline SharedPtr<T>& SharedPtr<T>::operator=(const SharedPtr<T>& ptr){
 	if(this != &ptr){
 		free();
 		if(ptr.isValid()){
@@ -222,7 +222,7 @@ inline SharedPtr<T> WeakPtr<T>::pin(){
 }
 
 template<typename T>
-inline WeakPtr<T> &WeakPtr<T>::operator=(const WeakPtr<T>& ptr){
+inline WeakPtr<T>& WeakPtr<T>::operator=(const WeakPtr<T>& ptr){
 	if(this != &ptr){
 		free();
 		if(ptr.isValid()){
