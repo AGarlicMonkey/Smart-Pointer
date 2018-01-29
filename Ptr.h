@@ -46,7 +46,7 @@ protected:
 public:
 	virtual ~BasePtr() = default;
 
-	T *get() const;
+	T* get() const;
 	bool isValid() const;
 
 	void reset();
@@ -86,10 +86,10 @@ public:
 
 	~SharedPtr();
 
-	T *operator->() const;
-	T &operator*() const;
+	T* operator->() const;
+	T& operator*() const;
 
-	SharedPtr<T>& operator=(T *inObject);
+	SharedPtr<T>& operator=(T* inObject);
 	SharedPtr<T>& operator=(const SharedPtr<T>& ptr);
 	SharedPtr<T>& operator=(const WeakPtr<T>& ptr);
 
