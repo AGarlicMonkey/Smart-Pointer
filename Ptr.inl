@@ -223,7 +223,7 @@ inline WeakPtr<T>::~WeakPtr(){
 
 template<typename T>
 inline SharedPtr<T> WeakPtr<T>::pin(){
-	return SharedPtr<T>(get());
+	return SharedPtr<T>(*this);
 }
 
 template<typename T>
