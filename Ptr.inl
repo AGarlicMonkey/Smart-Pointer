@@ -174,11 +174,13 @@ inline void SharedPtr<T>::init(T* inObject, Counter* inRef){
 	object = inObject;
 	if(inRef){
 		ref = inRef;
+		ref->grab();
 	} else{
 		ref = new Counter();
+		ref->grab();
+
 		enable(inObject, this);
 	}
-	ref->grab();
 }
 
 /////////WEAK
@@ -271,8 +273,8 @@ inline SharedPtr<T> SharedFromThis<T>::getSharedThis() const{
 	return SharedPtr<T>(weakThis);
 }
 
-template<typename T>
-void enable(SharedFromThis<T>* ptr, SharedPtr<T>* shptr){
+template<typename T, typename U>
+void enable(SharedFromThis<T>* ptr, SharedPtr<U>* shptr){
 	if(ptr){
 		ptr->doEnable(shptr);
 	}
@@ -284,5 +286,5 @@ void enable(const volatile void* Ptr, const volatile void* shptr){
 
 template<typename T>
 inline void SharedFromThis<T>::doEnable(SharedPtr<T>* shptr){
-	weakThis(shptr);
+	weakThis = *shptr;
 }
