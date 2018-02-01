@@ -23,6 +23,7 @@ public:
 //Pointer types
 template<typename T> class SharedPtr;
 template<typename T> class WeakPtr;
+template<typename T> class UniquePtr;
 
 template<typename T>
 class BasePtr{
@@ -140,6 +141,11 @@ private:
 	friend void enable(const volatile void* Ptr, const volatile void* shptr);
 	
 	void doEnable(SharedPtr<T>* shptr);
+};
+
+template<typename T>
+class UniquePtr{
+
 };
 
 #include "Ptr.inl"
