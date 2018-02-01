@@ -26,8 +26,8 @@ template<typename T> class WeakPtr;
 template<typename T> class UniquePtr;
 
 template<typename T>
-class BasePtr{
-	template<typename U> friend class BasePtr;
+class RefPtrBase{
+	template<typename U> friend class RefPtrBase;
 	
 	template<typename T> friend class SharedPtr;
 	template<typename U> friend class SharedPtr;
@@ -42,7 +42,7 @@ protected:
 
 	//FUNCTIONS	
 public:
-	virtual ~BasePtr() = default;
+	virtual ~RefPtrBase() = default;
 
 	T* get() const;
 	bool isValid() const;
@@ -70,7 +70,7 @@ protected:
 };
 
 template<typename T>
-class SharedPtr : public BasePtr<T>{
+class SharedPtr : public RefPtrBase<T>{
 	//FUNCTIONS
 public:
 	explicit SharedPtr() = default;
@@ -99,7 +99,7 @@ private:
 };
 
 template<typename T>
-class WeakPtr : public  BasePtr<T>{
+class WeakPtr : public  RefPtrBase<T>{
 	//FUNCTIONS
 public:
 	explicit WeakPtr() = default;

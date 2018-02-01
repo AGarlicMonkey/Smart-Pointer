@@ -1,75 +1,75 @@
 /////////BASE
 template<typename T>
-inline T* BasePtr<T>::get() const{
+inline T* RefPtrBase<T>::get() const{
 	return isValid() ? object : nullptr;
 }
 
 template<typename T>
-inline bool BasePtr<T>::isValid() const{
+inline bool RefPtrBase<T>::isValid() const{
 	return ref ? ref->check() > 0 ? object != nullptr : false : false;
 }
 
 template<typename T>
-inline void BasePtr<T>::reset(){
+inline void RefPtrBase<T>::reset(){
 	free();
 }
 
 template<typename T>
-inline bool BasePtr<T>::operator==(const T* inObject){
+inline bool RefPtrBase<T>::operator==(const T* inObject){
 	return get() == inObject;
 }
 
 template<typename T>
-inline bool BasePtr<T>::operator==(const SharedPtr<T>& ptr){
+inline bool RefPtrBase<T>::operator==(const SharedPtr<T>& ptr){
 	return get() == ptr.object;
 }
 
 template<typename T>
-inline bool BasePtr<T>::operator==(const WeakPtr<T>& ptr){
+inline bool RefPtrBase<T>::operator==(const WeakPtr<T>& ptr){
 	return get() == ptr.object;
 }
 
 template<typename T>
-inline bool BasePtr<T>::operator!=(const T* inObject){
+inline bool RefPtrBase<T>::operator!=(const T* inObject){
 	return get() != inObject;
 }
 
 template<typename T>
-inline bool BasePtr<T>::operator!=(const SharedPtr<T>& ptr){
+inline bool RefPtrBase<T>::operator!=(const SharedPtr<T>& ptr){
 	return get() != ptr.object;
 }
 
 template<typename T>
-inline bool BasePtr<T>::operator!=(const WeakPtr<T>& ptr){
+inline bool RefPtrBase<T>::operator!=(const WeakPtr<T>& ptr){
 	return get() != ptr.object;
 }
 
 template<typename T>
 template<typename U>
-inline bool BasePtr<T>::operator==(const SharedPtr<U>& ptr){
+inline bool RefPtrBase<T>::operator==(const SharedPtr<U>& ptr){
 	return get() == ptr.object;
 }
 
 template<typename T>
 template<typename U>
-inline bool BasePtr<T>::operator==(const WeakPtr<U>& ptr){
+inline bool RefPtrBase<T>::operator==(const WeakPtr<U>& ptr){
 	return get() == ptr.object;
 }
 
 template<typename T>
 template<typename U>
-inline bool BasePtr<T>::operator!=(const SharedPtr<U>& ptr){
+inline bool RefPtrBase<T>::operator!=(const SharedPtr<U>& ptr){
 	return get() != ptr.object;
 }
 
 template<typename T>
 template<typename U>
-inline bool BasePtr<T>::operator!=(const WeakPtr<U>& ptr){
+inline bool RefPtrBase<T>::operator!=(const WeakPtr<U>& ptr){
 	return get() != ptr.object;
 }
 
 template<typename T>
-inline BasePtr<T>::operator bool() const{
+inline RefPtrBase<T>::operator bool() const{
 	return isValid();
 }
 
