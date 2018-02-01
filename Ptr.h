@@ -150,6 +150,8 @@ private:
 
 template<typename T>
 class UniquePtr : public PtrBase<T>{
+	template<typename U> friend class UniquePtr;
+
 	//FUNCTIONS
 public:
 	UniquePtr() = default;
