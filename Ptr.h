@@ -21,14 +21,18 @@ public:
 };
 
 //Pointer types
+template<typename T> class RefPtrBase;
 template<typename T> class SharedPtr;
 template<typename T> class WeakPtr;
 template<typename T> class UniquePtr;
 
 template<typename T>
-class RefPtrBase{
+class PtrBase{
+	template<typename U> friend class PtrBase;
+
+	template<typename T> friend class RefPtrBase;
 	template<typename U> friend class RefPtrBase;
-	
+
 	template<typename T> friend class SharedPtr;
 	template<typename U> friend class SharedPtr;
 
@@ -37,23 +41,42 @@ class RefPtrBase{
 
 	//VARIABLES
 protected:
-	T* object	 = nullptr;
+	T* object = nullptr;
+
+	//FUNCTIONS	
+public:
+	virtual ~PtrBase() = default;
+
+	T* get() const;
+	virtual bool isValid() const;
+
+	void reset();
+
+	bool operator==(const T* inObject);
+
+	bool operator!=(const T* inObject);
+
+	explicit operator bool() const;
+
+protected:
+	virtual void free() = 0;
+};
+
+template<typename T>
+class RefPtrBase : public PtrBase<T>{
+	//VARIABLES
+protected:
 	Counter* ref = nullptr;
 
 	//FUNCTIONS	
 public:
 	virtual ~RefPtrBase() = default;
 
-	T* get() const;
-	bool isValid() const;
-
-	void reset();
-
-	bool operator==(const T* inObject);
+	virtual bool isValid() const override;
+	
 	bool operator==(const SharedPtr<T>& ptr);
 	bool operator==(const WeakPtr<T>& ptr);
 
-	bool operator!=(const T* inObject);
 	bool operator!=(const SharedPtr<T>& ptr);
 	bool operator!=(const WeakPtr<T>& ptr);
 
@@ -62,11 +85,6 @@ public:
 
 	template<typename U> bool operator!=(const SharedPtr<U>& ptr);
 	template<typename U> bool operator!=(const WeakPtr<U>& ptr);
-
-	explicit operator bool() const;
-
-protected:
-	virtual void free() = 0;
 };
 
 template<typename T>
@@ -99,7 +117,7 @@ private:
 };
 
 template<typename T>
-class WeakPtr : public  RefPtrBase<T>{
+class WeakPtr : public RefPtrBase<T>{
 	//FUNCTIONS
 public:
 	explicit WeakPtr() = default;
@@ -144,8 +162,22 @@ private:
 };
 
 template<typename T>
-class UniquePtr{
+class UniquePtr : public PtrBase<T>{
+	//FUNCTIONS
+public:
+	UniquePtr() = default;
+	UniquePtr(T* inObject);
 
+	~UniquePtr();
+
+	SharedPtr<T>& operator=(T* inObject);
+	SharedPtr<T>& operator=(const SharedPtr<T>& ptr);
+
+protected:
+	virtual void free() override;
+
+private:
+	void clear();
 };
 
 #include "Ptr.inl"
