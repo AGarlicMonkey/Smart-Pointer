@@ -244,7 +244,7 @@ inline void SharedFromThis<T>::doEnable(SharedPtr<T>* shptr){
 ///////UNIQUE
 template<typename T>
 inline UniquePtr<T>::UniquePtr(T* inObject){
-
+	object = inObject;
 }
 
 template<typename T>
