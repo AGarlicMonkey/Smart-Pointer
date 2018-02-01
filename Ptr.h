@@ -136,8 +136,8 @@ public:
 
 private:
 	template<typename T, typename U>
-	friend void enable(SharedFromThis<T>* ptr, SharedPtr<U>* shptr);
-	friend void enable(const volatile void* Ptr, const volatile void* shptr);
+	inline friend void enable(SharedFromThis<T>* ptr, SharedPtr<U>* shptr);
+	inline friend void enable(const volatile void* Ptr, const volatile void* shptr);
 	
 	void doEnable(SharedPtr<T>* shptr);
 };

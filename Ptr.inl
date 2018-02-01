@@ -274,13 +274,13 @@ inline SharedPtr<T> SharedFromThis<T>::getSharedThis() const{
 }
 
 template<typename T, typename U>
-void enable(SharedFromThis<T>* ptr, SharedPtr<U>* shptr){
+inline void enable(SharedFromThis<T>* ptr, SharedPtr<U>* shptr){
 	if(ptr){
 		ptr->doEnable(shptr);
 	}
 }
 
-void enable(const volatile void* Ptr, const volatile void* shptr){
+inline void enable(const volatile void* Ptr, const volatile void* shptr){
 	//Not of type SharedFromThis - do nothing
 }
 
