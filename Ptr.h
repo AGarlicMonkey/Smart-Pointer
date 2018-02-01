@@ -23,7 +23,6 @@ public:
 //Pointer types
 template<typename T> class SharedPtr;
 template<typename T> class WeakPtr;
-template<typename T> class SharedFromThis;
 
 template<typename T>
 class BasePtr{
