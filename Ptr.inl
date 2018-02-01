@@ -1,4 +1,4 @@
-///////BASE PTR
+///////BASE
 template<typename T>
 inline T* PtrBase<T>::get() const{
 	return isValid() ? object : nullptr;
@@ -19,7 +19,7 @@ inline PtrBase<T>::operator bool() const{
 	return isValid();
 }
 
-/////////REF BASE PTR
+/////////REFBASE 
 template<typename T>
 inline bool RefPtrBase<T>::isValid() const{
 	return ref ? ref->check() > 0 ? object != nullptr : false : false;
