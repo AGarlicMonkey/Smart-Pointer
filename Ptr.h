@@ -1,7 +1,6 @@
 #pragma once
 
 #include <list>
-#include "PtrManager.h"
 
 class Counter{
 	//VARIALBES
@@ -24,11 +23,10 @@ public:
 //Pointer types
 template<typename T> class SharedPtr;
 template<typename T> class WeakPtr;
+template<typename T> class SharedFromThis;
 
 template<typename T>
 class BasePtr{
-	friend class PtrManager;
-
 	template<typename U> friend class BasePtr;
 	
 	template<typename T> friend class SharedPtr;
@@ -124,6 +122,24 @@ protected:
 
 private:
 	void init(T* inObject, Counter* inRef);
+};
+
+template<typename T>
+class SharedFromThis{
+	//VARIABLES
+private:
+	WeakPtr<T> weakThis;
+
+	//FUNCTIONS
+public:
+	WeakPtr<T> getWeakThis() const;
+	SharedPtr<T> getSharedThis() const;
+
+private:
+	friend void enable(SharedFromThis<T>* ptr, SharedPtr<T>* shptr);
+	friend void enable(const volatile void* Ptr, const volatile void* shptr);
+	
+	void doEnable(SharedPtr<T>* shptr);
 };
 
 #include "Ptr.inl"

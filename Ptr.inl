@@ -161,9 +161,6 @@ template<typename T>
 inline void SharedPtr<T>::free(){
 	if(ref && ref->release() == 0){
 		if(ref->fullCheck() == 0){
-			if(PtrManager* manager = PtrManager::get()){
-				manager->unregisterType(static_cast<void*>(object));
-			}
 			delete ref;
 		}
 		delete object;
@@ -178,9 +175,8 @@ inline void SharedPtr<T>::init(T* inObject, Counter* inRef){
 	if(inRef){
 		ref = inRef;
 	} else{
-		if(PtrManager* manager = PtrManager::get()){
-			ref = manager->registerType(static_cast<void*>(object));
-		}
+		ref = new Counter();
+		enable(inObject, this);
 	}
 	ref->grab();
 }
@@ -248,13 +244,8 @@ inline WeakPtr<T>& WeakPtr<T>::operator=(const SharedPtr<T>& ptr){
 
 template<typename T>
 inline void WeakPtr<T>::free(){
-	if(ref && ref->weakRelease() == 0){
-		if(ref->fullCheck() == 0){
-			if(PtrManager* manager = PtrManager::get()){
-				manager->unregisterType(static_cast<void*>(object));
-			}
-			delete ref;
-		}
+	if(ref && ref->weakRelease() == 0 && ref->fullCheck() == 0){
+		delete ref;
 	}
 	object = nullptr;
 	ref = nullptr;
@@ -267,4 +258,31 @@ inline void WeakPtr<T>::init(T* inObject, Counter* inRef){
 		ref = inRef;
 		ref->weakGrab();
 	}
+}
+
+/////////SharedFromThis
+template<typename T>
+inline WeakPtr<T> SharedFromThis<T>::getWeakThis() const{
+	return weakThis;
+}
+
+template<typename T>
+inline SharedPtr<T> SharedFromThis<T>::getSharedThis() const{
+	return SharedPtr<T>(weakThis);
+}
+
+template<typename T>
+void enable(SharedFromThis<T>* ptr, SharedPtr<T>* shptr){
+	if(ptr){
+		ptr->doEnable(shptr);
+	}
+}
+
+void enable(const volatile void* Ptr, const volatile void* shptr){
+	//Not of type SharedFromThis - do nothing
+}
+
+template<typename T>
+inline void SharedFromThis<T>::doEnable(SharedPtr<T>* shptr){
+	weakThis(shptr);
 }
