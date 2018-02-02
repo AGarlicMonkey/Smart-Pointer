@@ -253,12 +253,12 @@ inline UniquePtr<T>::~UniquePtr(){
 }
 
 template<typename T>
-inline SharedPtr<T>& UniquePtr<T>::operator=(T* inObject){
+inline UniquePtr<T>& UniquePtr<T>::operator=(T* inObject){
 	object = inObject;
 }
 
 template<typename T>
-inline SharedPtr<T>& UniquePtr<T>::operator=(const SharedPtr<T>& ptr){
+inline UniquePtr<T>& UniquePtr<T>::operator=(const UniquePtr<T>& ptr){
 	if(ptr.isValid()){
 		object = ptr.object;
 		ptr.clear();
@@ -267,7 +267,9 @@ inline SharedPtr<T>& UniquePtr<T>::operator=(const SharedPtr<T>& ptr){
 
 template<typename T>
 inline void UniquePtr<T>::free(){
-	delete object;
+	if(isValid()){
+		delete object;
+	}
 	clear();
 }
 
