@@ -21,46 +21,27 @@ public:
 };
 
 //Pointer types
+template<typename T> class RefPtrBase;
 template<typename T> class SharedPtr;
 template<typename T> class WeakPtr;
+template<typename T> class UniquePtr;
 
 template<typename T>
-class BasePtr{
-	template<typename U> friend class BasePtr;
-	
-	template<typename T> friend class SharedPtr;
-	template<typename U> friend class SharedPtr;
-
-	template<typename T> friend class WeakPtr;
-	template<typename U> friend class WeakPtr;
+class PtrBase{
+	template<typename U> friend class PtrBase;
 
 	//VARIABLES
 protected:
-	T* object	 = nullptr;
-	Counter* ref = nullptr;
+	T* object = nullptr;
 
 	//FUNCTIONS	
 public:
-	virtual ~BasePtr() = default;
+	virtual ~PtrBase() = default;
 
 	T* get() const;
-	bool isValid() const;
+	virtual bool isValid() const;
 
 	void reset();
-
-	bool operator==(const T* inObject);
-	bool operator==(const SharedPtr<T>& ptr);
-	bool operator==(const WeakPtr<T>& ptr);
-
-	bool operator!=(const T* inObject);
-	bool operator!=(const SharedPtr<T>& ptr);
-	bool operator!=(const WeakPtr<T>& ptr);
-
-	template<typename U> bool operator==(const SharedPtr<U>& ptr);
-	template<typename U> bool operator==(const WeakPtr<U>& ptr);
-
-	template<typename U> bool operator!=(const SharedPtr<U>& ptr);
-	template<typename U> bool operator!=(const WeakPtr<U>& ptr);
 
 	explicit operator bool() const;
 
@@ -69,7 +50,27 @@ protected:
 };
 
 template<typename T>
-class SharedPtr : public BasePtr<T>{
+class RefPtrBase : public PtrBase<T>{
+	template<typename U> friend class RefPtrBase;
+
+	//VARIABLES
+protected:
+	Counter* ref = nullptr;
+
+	//FUNCTIONS	
+public:
+	virtual ~RefPtrBase() = default;
+
+	virtual bool isValid() const override;
+};
+
+template<typename T>
+class SharedPtr : public RefPtrBase<T>{
+	template<typename U> friend class SharedPtr;
+
+	template<typename T> friend class WeakPtr;
+	template<typename U> friend class WeakPtr;
+
 	//FUNCTIONS
 public:
 	explicit SharedPtr() = default;
@@ -98,7 +99,12 @@ private:
 };
 
 template<typename T>
-class WeakPtr : public  BasePtr<T>{
+class WeakPtr : public RefPtrBase<T>{
+	template<typename U> friend class WeakPtr;
+
+	template<typename T> friend class SharedPtr;
+	template<typename U> friend class SharedPtr;
+
 	//FUNCTIONS
 public:
 	explicit WeakPtr() = default;
@@ -142,4 +148,87 @@ private:
 	void doEnable(SharedPtr<T>* shptr);
 };
 
+template<typename T>
+class UniquePtr : public PtrBase<T>{
+	template<typename U> friend class UniquePtr;
+
+	//FUNCTIONS
+public:
+	explicit UniquePtr() = default;
+	explicit UniquePtr(T* inObject);
+	UniquePtr(UniquePtr<T>& ptr);
+
+	~UniquePtr();
+
+	UniquePtr<T>& operator=(T* inObject);
+	UniquePtr<T>& operator=(UniquePtr<T>& ptr);
+
+protected:
+	virtual void free() override;
+
+private:
+	void clear();
+};
+
 #include "Ptr.inl"
+
+///////COMPARISON OPERATORS
+//T == T
+template<typename T>
+inline bool operator==(const PtrBase<T>& lptr, const PtrBase<T>& rptr){
+	return lptr.get() == rptr.get();
+}
+template<typename T>
+inline bool operator==(const PtrBase<T>& ptr, const T* object){
+	return ptr.get() == object;
+}
+template<typename T>
+inline bool operator==(const PtrBase<T>& ptr, const T& object){
+	return ptr.get() == *object;
+}
+
+//T != T
+template<typename T>
+inline bool operator!=(const PtrBase<T>& lptr, const PtrBase<T>& rptr){
+	return !(lptr == rptr);
+}
+template<typename T>
+inline bool operator!=(const PtrBase<T>& ptr, const T* object){
+	return !(ptr == object);
+}
+template<typename T>
+inline bool operator!=(const PtrBase<T>& ptr, const T& object){
+	return !(ptr == object);
+}
+
+//T == U
+template<typename T, typename U>
+inline bool operator==(const PtrBase<T>& lptr, const PtrBase<U>& rptr){
+	return lptr.get() == rptr.get();
+}
+template<typename T, typename U>
+inline bool operator==(const PtrBase<T>& ptr, const U* object){
+	return ptr.get() == object;
+}
+
+//T != U
+template<typename T, typename U>
+inline bool operator!=(const PtrBase<T>& lptr, const PtrBase<U>& rptr){
+	return !(lptr == rptr);
+}
+template<typename T, typename U>
+inline bool operator!=(const PtrBase<T>& ptr, const U* object){
+	return !(ptr == object);
+}
+
+//T == nullptr_t
+template<typename T>
+inline bool operator==(const PtrBase<T>& ptr, nullptr_t object){
+	return !ptr.isValid();
+}
+
+//T != nullptr_t
+template<typename T>
+inline bool operator!=(const PtrBase<T>& ptr, nullptr_t object){
+	return !(ptr == object);
+}

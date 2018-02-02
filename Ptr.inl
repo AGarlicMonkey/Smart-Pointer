@@ -1,76 +1,29 @@
-/////////BASE
+#include "Ptr.h"
+///////BASE
 template<typename T>
-inline T* BasePtr<T>::get() const{
+inline T* PtrBase<T>::get() const{
 	return isValid() ? object : nullptr;
 }
 
 template<typename T>
-inline bool BasePtr<T>::isValid() const{
-	return ref ? ref->check() > 0 ? object != nullptr : false : false;
+inline bool PtrBase<T>::isValid() const{
+	return object != nullptr;
 }
 
 template<typename T>
-inline void BasePtr<T>::reset(){
+inline void PtrBase<T>::reset(){
 	free();
 }
 
 template<typename T>
-inline bool BasePtr<T>::operator==(const T* inObject){
-	return get() == inObject;
-}
-
-template<typename T>
-inline bool BasePtr<T>::operator==(const SharedPtr<T>& ptr){
-	return get() == ptr.object;
-}
-
-template<typename T>
-inline bool BasePtr<T>::operator==(const WeakPtr<T>& ptr){
-	return get() == ptr.object;
-}
-
-template<typename T>
-inline bool BasePtr<T>::operator!=(const T* inObject){
-	return get() != inObject;
-}
-
-template<typename T>
-inline bool BasePtr<T>::operator!=(const SharedPtr<T>& ptr){
-	return get() != ptr.object;
-}
-
-template<typename T>
-inline bool BasePtr<T>::operator!=(const WeakPtr<T>& ptr){
-	return get() != ptr.object;
-}
-
-template<typename T>
-template<typename U>
-inline bool BasePtr<T>::operator==(const SharedPtr<U>& ptr){
-	return get() == ptr.object;
-}
-
-template<typename T>
-template<typename U>
-inline bool BasePtr<T>::operator==(const WeakPtr<U>& ptr){
-	return get() == ptr.object;
-}
-
-template<typename T>
-template<typename U>
-inline bool BasePtr<T>::operator!=(const SharedPtr<U>& ptr){
-	return get() != ptr.object;
-}
-
-template<typename T>
-template<typename U>
-inline bool BasePtr<T>::operator!=(const WeakPtr<U>& ptr){
-	return get() != ptr.object;
-}
-
-template<typename T>
-inline BasePtr<T>::operator bool() const{
+inline PtrBase<T>::operator bool() const{
 	return isValid();
+}
+
+/////////REFBASE 
+template<typename T>
+inline bool RefPtrBase<T>::isValid() const{
+	return ref ? ref->check() > 0 ? object != nullptr : false : false;
 }
 
 /////////SHARED
@@ -287,4 +240,49 @@ inline void enable(const volatile void* Ptr, const volatile void* shptr){
 template<typename T>
 inline void SharedFromThis<T>::doEnable(SharedPtr<T>* shptr){
 	weakThis = *shptr;
+}
+
+///////UNIQUE
+template<typename T>
+inline UniquePtr<T>::UniquePtr(T* inObject){
+	object = inObject;
+}
+
+template<typename T>
+inline UniquePtr<T>::UniquePtr(UniquePtr<T>& ptr){
+	if(ptr.isValid()){
+		object = ptr.object;
+		ptr.clear();
+	}
+}
+
+template<typename T>
+inline UniquePtr<T>::~UniquePtr(){
+	free();
+}
+
+template<typename T>
+inline UniquePtr<T>& UniquePtr<T>::operator=(T* inObject){
+	object = inObject;
+}
+
+template<typename T>
+inline UniquePtr<T>& UniquePtr<T>::operator=(UniquePtr<T>& ptr){
+	if(ptr.isValid()){
+		object = ptr.object;
+		ptr.clear();
+	}
+}
+
+template<typename T>
+inline void UniquePtr<T>::free(){
+	if(isValid()){
+		delete object;
+	}
+	clear();
+}
+
+template<typename T>
+inline void UniquePtr<T>::clear(){
+	object = nullptr;
 }
