@@ -1,3 +1,4 @@
+#include "Ptr.h"
 ///////BASE
 template<typename T>
 inline T* PtrBase<T>::get() const{
@@ -248,6 +249,14 @@ inline UniquePtr<T>::UniquePtr(T* inObject){
 }
 
 template<typename T>
+inline UniquePtr<T>::UniquePtr(UniquePtr<T>& ptr){
+	if(ptr.isValid()){
+		object = ptr.object;
+		ptr.clear();
+	}
+}
+
+template<typename T>
 inline UniquePtr<T>::~UniquePtr(){
 	free();
 }
@@ -258,7 +267,7 @@ inline UniquePtr<T>& UniquePtr<T>::operator=(T* inObject){
 }
 
 template<typename T>
-inline UniquePtr<T>& UniquePtr<T>::operator=(const UniquePtr<T>& ptr){
+inline UniquePtr<T>& UniquePtr<T>::operator=(UniquePtr<T>& ptr){
 	if(ptr.isValid()){
 		object = ptr.object;
 		ptr.clear();

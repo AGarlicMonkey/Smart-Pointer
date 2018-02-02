@@ -156,11 +156,12 @@ class UniquePtr : public PtrBase<T>{
 public:
 	explicit UniquePtr() = default;
 	explicit UniquePtr(T* inObject);
+	UniquePtr(UniquePtr<T>& ptr);
 
 	~UniquePtr();
 
 	UniquePtr<T>& operator=(T* inObject);
-	UniquePtr<T>& operator=(const UniquePtr<T>& ptr);
+	UniquePtr<T>& operator=(UniquePtr<T>& ptr);
 
 protected:
 	virtual void free() override;
