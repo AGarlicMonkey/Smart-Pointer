@@ -84,7 +84,10 @@ public:
 
 	~SharedPtr();
 
+	T* operator->();
 	T* operator->() const;
+
+	T& operator*();
 	T& operator*() const;
 
 	SharedPtr<T>& operator=(T* inObject);

@@ -1,4 +1,3 @@
-#include "Ptr.h"
 ///////BASE
 template<typename T>
 inline T* PtrBase<T>::get() const{
@@ -70,8 +69,18 @@ inline SharedPtr<T>::~SharedPtr(){
 }
 
 template<typename T>
+inline T* SharedPtr<T>::operator->(){
+	return get();
+}
+
+template<typename T>
 inline T* SharedPtr<T>::operator->() const{
 	return get();
+}
+
+template<typename T>
+inline T& SharedPtr<T>::operator*(){
+	return *get();
 }
 
 template<typename T>
