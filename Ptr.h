@@ -163,6 +163,12 @@ public:
 
 	~UniquePtr();
 
+	T* operator->();
+	T* operator->() const;
+
+	T& operator*();
+	T& operator*() const;
+
 	UniquePtr<T>& operator=(T* inObject);
 	UniquePtr<T>& operator=(UniquePtr<T>& ptr);
 

@@ -271,6 +271,26 @@ inline UniquePtr<T>::~UniquePtr(){
 }
 
 template<typename T>
+inline T* UniquePtr<T>::operator->(){
+	return get();
+}
+
+template<typename T>
+inline T* UniquePtr<T>::operator->() const{
+	return get();
+}
+
+template<typename T>
+inline T& UniquePtr<T>::operator*(){
+	return *get();
+}
+
+template<typename T>
+inline T& UniquePtr<T>::operator*() const{
+	return *get();
+}
+
+template<typename T>
 inline UniquePtr<T>& UniquePtr<T>::operator=(T* inObject){
 	object = inObject;
 }
