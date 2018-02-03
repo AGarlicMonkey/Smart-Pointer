@@ -312,6 +312,7 @@ inline UniquePtr<T>& UniquePtr<T>::operator=(UniquePtr<T>&& ptr){
 		object = ptr.object;
 		ptr.object = nullptr;
 	}
+	return *this;
 }
 
 template<typename T>
