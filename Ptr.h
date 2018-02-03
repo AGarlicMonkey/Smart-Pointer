@@ -172,6 +172,8 @@ public:
 	T& operator*();
 	T& operator*() const;
 
+	UniquePtr<T>& operator=(UniquePtr<T>&& ptr);
+
 protected:
 	virtual void free() override;
 };
