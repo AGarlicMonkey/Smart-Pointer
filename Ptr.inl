@@ -1,3 +1,4 @@
+#include "Ptr.h"
 ///////BASE
 template<typename T>
 inline T* PtrBase<T>::get() const{
@@ -258,16 +259,29 @@ inline UniquePtr<T>::UniquePtr(T* inObject){
 }
 
 template<typename T>
-inline UniquePtr<T>::UniquePtr(UniquePtr<T>& ptr){
-	if(ptr.isValid()){
-		object = ptr.object;
-		ptr.clear();
-	}
+inline UniquePtr<T>::UniquePtr(UniquePtr<T>&& ptr){
+	object = ptr.object;
+	ptr.object = nullptr;
 }
 
 template<typename T>
 inline UniquePtr<T>::~UniquePtr(){
 	free();
+}
+
+template<typename T>
+inline UniquePtr<T> UniquePtr<T>::move(){
+	UniquePtr<T> out(object);
+	object = nullptr;
+	return out;
+}
+
+template<typename T>
+template<typename U>
+inline UniquePtr<U> UniquePtr<T>::move(){
+	UniquePtr<U> out(object);
+	object = nullptr;
+	return out;
 }
 
 template<typename T>
@@ -291,27 +305,9 @@ inline T& UniquePtr<T>::operator*() const{
 }
 
 template<typename T>
-inline UniquePtr<T>& UniquePtr<T>::operator=(T* inObject){
-	object = inObject;
-}
-
-template<typename T>
-inline UniquePtr<T>& UniquePtr<T>::operator=(UniquePtr<T>& ptr){
-	if(ptr.isValid()){
-		object = ptr.object;
-		ptr.clear();
-	}
-}
-
-template<typename T>
 inline void UniquePtr<T>::free(){
 	if(isValid()){
 		delete object;
 	}
-	clear();
-}
-
-template<typename T>
-inline void UniquePtr<T>::clear(){
 	object = nullptr;
 }

@@ -145,8 +145,8 @@ public:
 
 private:
 	template<typename T, typename U>
-	inline friend void enable(SharedFromThis<T>* ptr, SharedPtr<U>* shptr);
-	inline friend void enable(const volatile void* Ptr, const volatile void* shptr);
+	friend void enable(SharedFromThis<T>* ptr, SharedPtr<U>* shptr);
+	friend void enable(const volatile void* Ptr, const volatile void* shptr);
 	
 	void doEnable(SharedPtr<T>* shptr);
 };
@@ -159,9 +159,12 @@ class UniquePtr : public PtrBase<T>{
 public:
 	explicit UniquePtr() = default;
 	explicit UniquePtr(T* inObject);
-	UniquePtr(UniquePtr<T>& ptr);
+	UniquePtr(UniquePtr<T>&& ptr);
 
 	~UniquePtr();
+
+	UniquePtr<T> move();
+	template<typename U> UniquePtr<U> move();
 
 	T* operator->();
 	T* operator->() const;
@@ -169,14 +172,8 @@ public:
 	T& operator*();
 	T& operator*() const;
 
-	UniquePtr<T>& operator=(T* inObject);
-	UniquePtr<T>& operator=(UniquePtr<T>& ptr);
-
 protected:
 	virtual void free() override;
-
-private:
-	void clear();
 };
 
 #include "Ptr.inl"
