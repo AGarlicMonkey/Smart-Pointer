@@ -264,6 +264,13 @@ inline UniquePtr<T>::UniquePtr(UniquePtr<T>&& ptr){
 }
 
 template<typename T>
+template<typename U>
+inline UniquePtr<T>::UniquePtr(UniquePtr<U>&& ptr){
+	object = ptr.object;
+	ptr.object = nullptr;
+}
+
+template<typename T>
 inline UniquePtr<T>::~UniquePtr(){
 	free();
 }
@@ -271,14 +278,6 @@ inline UniquePtr<T>::~UniquePtr(){
 template<typename T>
 inline UniquePtr<T> UniquePtr<T>::move(){
 	UniquePtr<T> out(object);
-	object = nullptr;
-	return out;
-}
-
-template<typename T>
-template<typename U>
-inline UniquePtr<U> UniquePtr<T>::move(){
-	UniquePtr<U> out(object);
 	object = nullptr;
 	return out;
 }

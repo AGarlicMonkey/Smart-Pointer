@@ -159,12 +159,14 @@ class UniquePtr : public PtrBase<T>{
 public:
 	explicit UniquePtr() = default;
 	explicit UniquePtr(T* inObject);
+
 	UniquePtr(UniquePtr<T>&& ptr);
+
+	template<typename U> UniquePtr(UniquePtr<U>&& ptr);
 
 	~UniquePtr();
 
 	UniquePtr<T> move();
-	template<typename U> UniquePtr<U> move();
 
 	T* operator->();
 	T* operator->() const;
