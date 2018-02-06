@@ -123,10 +123,10 @@ inline SharedPtr<T>& SharedPtr<T>::operator=(const WeakPtr<T>& ptr){
 template<typename T>
 inline void SharedPtr<T>::free(){
 	if(ref && ref->release() == 0){
+		deleter(get());
 		if(ref->fullCheck() == 0){
 			delete ref;
 		}
-		delete object;
 	}
 	object = nullptr;
 	ref = nullptr;
@@ -307,7 +307,7 @@ inline T& UniquePtr<T>::operator*() const{
 template<typename T>
 inline void UniquePtr<T>::free(){
 	if(isValid()){
-		delete object;
+		deleter(get());
 	}
 	object = nullptr;
 }

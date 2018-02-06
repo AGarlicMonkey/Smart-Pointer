@@ -41,6 +41,8 @@ class PtrBase{
 protected:
 	T* object = nullptr;
 
+	DefaultDeleter<T> deleter;
+
 	//FUNCTIONS	
 public:
 	virtual ~PtrBase() = default;
