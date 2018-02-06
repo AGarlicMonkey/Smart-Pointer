@@ -20,6 +20,13 @@ public:
 	inline int weakRelease(){ return --weakCount; }
 };
 
+template<typename T>
+struct DefaultDeleter{
+	void operator()(T* ptr){
+		delete ptr;
+	}
+};
+
 //Pointer types
 template<typename T> class RefPtrBase;
 template<typename T> class SharedPtr;
