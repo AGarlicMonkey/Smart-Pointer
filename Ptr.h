@@ -20,9 +20,8 @@ public:
 	inline int weakRelease(){ return --weakCount; }
 };
 
-template<typename T>
 struct DefaultDeleter{
-	void operator()(T* ptr){
+	void operator()(void* ptr){
 		delete ptr;
 	}
 };
@@ -41,7 +40,7 @@ class PtrBase{
 protected:
 	T* object = nullptr;
 
-	DefaultDeleter<T> deleter;
+	DefaultDeleter deleter;
 
 	//FUNCTIONS	
 public:
