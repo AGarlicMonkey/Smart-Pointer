@@ -1,22 +1,21 @@
-#include "Ptr.h"
 ///////BASE
-template<typename T>
-inline T* PtrBase<T>::get() const{
+template<typename T, typename D>
+inline T* PtrBase<T, D>::get() const{
 	return isValid() ? object : nullptr;
 }
 
-template<typename T>
-inline bool PtrBase<T>::isValid() const{
+template<typename T, typename D>
+inline bool PtrBase<T, D>::isValid() const{
 	return object != nullptr;
 }
 
-template<typename T>
-inline void PtrBase<T>::reset(){
+template<typename T, typename D>
+inline void PtrBase<T, D>::reset(){
 	free();
 }
 
-template<typename T>
-inline PtrBase<T>::operator bool() const{
+template<typename T, typename D>
+inline PtrBase<T, D>::operator bool() const{
 	return isValid();
 }
 

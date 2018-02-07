@@ -32,15 +32,15 @@ template<typename T> class SharedPtr;
 template<typename T> class WeakPtr;
 template<typename T> class UniquePtr;
 
-template<typename T>
+template<typename T, typename D = DefaultDeleter>
 class PtrBase{
-	template<typename U> friend class PtrBase;
+	template<typename U, typename D> friend class PtrBase;
 
 	//VARIABLES
 protected:
 	T* object = nullptr;
 
-	DefaultDeleter deleter;
+	D deleter;
 
 	//FUNCTIONS	
 public:
