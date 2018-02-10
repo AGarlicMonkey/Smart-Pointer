@@ -167,18 +167,22 @@ class UniquePtr : public PtrBase<T, D>{
 public:
 	explicit UniquePtr() = default;
 	explicit UniquePtr(T* inObject);
+
 	UniquePtr(UniquePtr<T, D>&& ptr);
+
+	template<typename U> UniquePtr(UniquePtr<U, D>&& ptr);
 
 	~UniquePtr();
 
 	UniquePtr<T, D> move();
-	template<typename U> UniquePtr<U, D> move();
 
 	T* operator->();
 	T* operator->() const;
 
 	T& operator*();
 	T& operator*() const;
+
+	UniquePtr<T, D>& operator=(UniquePtr<T, D>&& ptr);
 
 protected:
 	virtual void free() override;

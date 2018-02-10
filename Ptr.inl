@@ -264,21 +264,20 @@ inline UniquePtr<T, D>::UniquePtr(UniquePtr<T, D>&& ptr){
 }
 
 template<typename T, typename D>
-inline UniquePtr<T, D>::~UniquePtr(){
+template<typename U>
+inline UniquePtr<T, D>::UniquePtr(UniquePtr<U, D>&& ptr){
+	object = ptr.object;
+	ptr.object = nullptr;
+}
+
+template<typename T, typename D>
+inline UniquePtr<T, D>::~UniquePtr() {
 	free();
 }
 
 template<typename T, typename D>
 inline UniquePtr<T, D> UniquePtr<T, D>::move(){
 	UniquePtr<T, D> out(object);
-	object = nullptr;
-	return out;
-}
-
-template<typename T, typename D>
-template<typename U>
-inline UniquePtr<U, D> UniquePtr<T, D>::move(){
-	UniquePtr<U, D> out(object);
 	object = nullptr;
 	return out;
 }
@@ -304,7 +303,19 @@ inline T& UniquePtr<T, D>::operator*() const{
 }
 
 template<typename T, typename D>
-inline void UniquePtr<T, D>::free(){
+inline UniquePtr<T, D>& UniquePtr<T, D>::operator=(UniquePtr<T, D>&& ptr){
+	if(this != &ptr){
+		if(isValid()){
+			free();
+		}
+		object = ptr.object;
+		ptr.object = nullptr;
+	}
+	return *this;
+}
+
+template<typename T, typename D>
+inline void UniquePtr<T, D>::free() {
 	if(isValid()){
 		deleter(get());
 	}
