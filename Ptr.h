@@ -27,10 +27,10 @@ struct DefaultDeleter{
 };
 
 //Pointer types
-template<typename T> class RefPtrBase;
-template<typename T> class SharedPtr;
-template<typename T> class WeakPtr;
-template<typename T> class UniquePtr;
+template<typename T, typename D> class RefPtrBase;
+template<typename T, typename D> class SharedPtr;
+template<typename T, typename D> class WeakPtr;
+template<typename T, typename D> class UniquePtr;
 
 template<typename T, typename D = DefaultDeleter>
 class PtrBase{
@@ -57,9 +57,9 @@ protected:
 	virtual void free() = 0;
 };
 
-template<typename T>
-class RefPtrBase : public PtrBase<T>{
-	template<typename U> friend class RefPtrBase;
+template<typename T, typename D = DefaultDeleter>
+class RefPtrBase : public PtrBase<T, D>{
+	template<typename U, typename D> friend class RefPtrBase;
 
 	//VARIABLES
 protected:
@@ -72,23 +72,23 @@ public:
 	virtual bool isValid() const override;
 };
 
-template<typename T>
-class SharedPtr : public RefPtrBase<T>{
-	template<typename U> friend class SharedPtr;
+template<typename T, typename D = DefaultDeleter>
+class SharedPtr : public RefPtrBase<T, D>{
+	template<typename U, typename D> friend class SharedPtr;
 
-	template<typename T> friend class WeakPtr;
-	template<typename U> friend class WeakPtr;
+	template<typename T, typename D> friend class WeakPtr;
+	template<typename U, typename D> friend class WeakPtr;
 
 	//FUNCTIONS
 public:
 	explicit SharedPtr() = default;
 	explicit SharedPtr(T* inObject);
 
-	SharedPtr(const SharedPtr<T>& ptr);
-	SharedPtr(const WeakPtr<T>& ptr);
+	SharedPtr(const SharedPtr<T, D>& ptr);
+	SharedPtr(const WeakPtr<T, D>& ptr);
 	
-	template <typename U> SharedPtr(const SharedPtr<U>& ptr);
-	template <typename U> SharedPtr(const WeakPtr<U>& ptr);
+	template <typename U> SharedPtr(const SharedPtr<U, D>& ptr);
+	template <typename U> SharedPtr(const WeakPtr<U, D>& ptr);
 
 	~SharedPtr();
 
@@ -98,9 +98,9 @@ public:
 	T& operator*();
 	T& operator*() const;
 
-	SharedPtr<T>& operator=(T* inObject);
-	SharedPtr<T>& operator=(const SharedPtr<T>& ptr);
-	SharedPtr<T>& operator=(const WeakPtr<T>& ptr);
+	SharedPtr<T, D>& operator=(T* inObject);
+	SharedPtr<T, D>& operator=(const SharedPtr<T, D>& ptr);
+	SharedPtr<T, D>& operator=(const WeakPtr<T, D>& ptr);
 
 protected:
 	virtual void free() override;
@@ -109,29 +109,29 @@ private:
 	void init(T* inObject, Counter* inRef = nullptr);
 };
 
-template<typename T>
-class WeakPtr : public RefPtrBase<T>{
-	template<typename U> friend class WeakPtr;
+template<typename T, typename D = DefaultDeleter>
+class WeakPtr : public RefPtrBase<T, D>{
+	template<typename U, typename D> friend class WeakPtr;
 
-	template<typename T> friend class SharedPtr;
-	template<typename U> friend class SharedPtr;
+	template<typename T, typename D> friend class SharedPtr;
+	template<typename U, typename D> friend class SharedPtr;
 
 	//FUNCTIONS
 public:
 	explicit WeakPtr() = default;
 
-	WeakPtr(const WeakPtr<T>& ptr);
-	WeakPtr(const SharedPtr<T>& ptr);
+	WeakPtr(const WeakPtr<T, D>& ptr);
+	WeakPtr(const SharedPtr<T, D>& ptr);
 	
-	template<typename U> WeakPtr(const WeakPtr<U>& ptr);
-	template<typename U> WeakPtr(const SharedPtr<U>& ptr);
+	template<typename U> WeakPtr(const WeakPtr<U, D>& ptr);
+	template<typename U> WeakPtr(const SharedPtr<U, D>& ptr);
 
 	~WeakPtr();
 
-	SharedPtr<T> pin();
+	SharedPtr<T, D> pin();
 
-	WeakPtr<T>& operator=(const WeakPtr<T>& ptr);
-	WeakPtr<T>& operator=(const SharedPtr<T>& ptr);
+	WeakPtr<T, D>& operator=(const WeakPtr<T, D>& ptr);
+	WeakPtr<T, D>& operator=(const SharedPtr<T, D>& ptr);
 
 protected:
 	virtual void free() override;
@@ -159,20 +159,20 @@ private:
 	void doEnable(SharedPtr<T>* shptr);
 };
 
-template<typename T>
-class UniquePtr : public PtrBase<T>{
-	template<typename U> friend class UniquePtr;
+template<typename T, typename D = DefaultDeleter>
+class UniquePtr : public PtrBase<T, D>{
+	template<typename U, typename D> friend class UniquePtr;
 
 	//FUNCTIONS
 public:
 	explicit UniquePtr() = default;
 	explicit UniquePtr(T* inObject);
-	UniquePtr(UniquePtr<T>&& ptr);
+	UniquePtr(UniquePtr<T, D>&& ptr);
 
 	~UniquePtr();
 
-	UniquePtr<T> move();
-	template<typename U> UniquePtr<U> move();
+	UniquePtr<T, D> move();
+	template<typename U> UniquePtr<U, D> move();
 
 	T* operator->();
 	T* operator->() const;
