@@ -235,8 +235,8 @@ inline SharedPtr<T> SharedFromThis<T>::getSharedThis() const{
 	return SharedPtr<T>(weakThis);
 }
 
-template<typename T, typename U>
-inline void enable(SharedFromThis<T>* ptr, SharedPtr<U>* shptr){
+template<typename T>
+inline void enable(SharedFromThis<T>* ptr, SharedPtr<T>* shptr){
 	if(ptr){
 		ptr->doEnable(shptr);
 	}
