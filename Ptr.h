@@ -79,6 +79,9 @@ class SharedPtr : public RefPtrBase<T, D>{
 	template<typename T, typename D> friend class WeakPtr;
 	template<typename U, typename D> friend class WeakPtr;
 
+	template<typename T> friend class SharedFromThis;
+	template<typename U> friend class SharedFromThis;
+
 	//FUNCTIONS
 public:
 	explicit SharedPtr() = default;
@@ -116,6 +119,9 @@ class WeakPtr : public RefPtrBase<T, D>{
 	template<typename T, typename D> friend class SharedPtr;
 	template<typename U, typename D> friend class SharedPtr;
 
+	template<typename T> friend class SharedFromThis;
+	template<typename U> friend class SharedFromThis;
+
 	//FUNCTIONS
 public:
 	explicit WeakPtr() = default;
@@ -142,6 +148,8 @@ private:
 
 template<typename T>
 class SharedFromThis{
+	typedef T shT;
+
 	//VARIABLES
 private:
 	WeakPtr<T> weakThis;
@@ -153,10 +161,11 @@ public:
 
 private:
 	template<typename T>
-	friend void enable(SharedFromThis<T>* ptr, SharedPtr<T>* shptr);
+	friend void enable(typename T::shT* ptr, SharedPtr<T>* shptr);
 	friend void enable(const volatile void* Ptr, const volatile void* shptr);
 	
-	void doEnable(SharedPtr<T>* shptr);
+	template<typename U>
+	void doEnable(T* ptr, SharedPtr<U>* shptr);
 };
 
 template<typename T, typename D = DefaultDeleter>

@@ -231,14 +231,15 @@ inline WeakPtr<T> SharedFromThis<T>::getWeakThis() const{
 }
 
 template<typename T>
-inline SharedPtr<T> SharedFromThis<T>::getSharedThis() const{
-	return SharedPtr<T>(weakThis);
+template<typename U>
+inline SharedPtr<U> SharedFromThis<T>::getSharedThis() const{
+	return SharedPtr<U>(getWeakThis<U>());
 }
 
 template<typename T>
-inline void enable(SharedFromThis<T>* ptr, SharedPtr<T>* shptr){
+inline void enable(typename T::shT* ptr, SharedPtr<T>* shptr){
 	if(ptr){
-		ptr->doEnable(shptr);
+		ptr->doEnable(ptr, shptr);
 	}
 }
 
@@ -247,8 +248,11 @@ inline void enable(const volatile void* Ptr, const volatile void* shptr){
 }
 
 template<typename T>
-inline void SharedFromThis<T>::doEnable(SharedPtr<T>* shptr){
-	weakThis = *shptr;
+template<typename U>
+inline void SharedFromThis<T>::doEnable(T* ptr, SharedPtr<U>* shptr){
+	if(ptr && shptr){
+		ptr->weakThis.init(shptr->get(), shptr->ref);
+	}
 }
 
 ///////UNIQUE
