@@ -159,6 +159,9 @@ public:
 	WeakPtr<T> getWeakThis() const;
 	SharedPtr<T> getSharedThis() const;
 
+	template<typename U> WeakPtr<U> getWeakThis() const;
+	template<typename U> SharedPtr<U> getSharedThis() const;
+
 private:
 	template<typename T>
 	friend void enable(typename T::shT* ptr, SharedPtr<T>* shptr);

@@ -231,6 +231,20 @@ inline WeakPtr<T> SharedFromThis<T>::getWeakThis() const{
 }
 
 template<typename T>
+inline SharedPtr<T> SharedFromThis<T>::getSharedThis() const{
+	return SharedPtr<T>(getWeakThis());
+}
+
+template<typename T>
+template<typename U>
+inline WeakPtr<U> SharedFromThis<T>::getWeakThis() const{
+	U* ptr = static_cast<U*>(weakThis.get());
+	WeakPtr<U> outPtr;
+	outPtr.init(ptr, weakThis.ref);
+	return outPtr;
+}
+
+template<typename T>
 template<typename U>
 inline SharedPtr<U> SharedFromThis<T>::getSharedThis() const{
 	return SharedPtr<U>(getWeakThis<U>());
