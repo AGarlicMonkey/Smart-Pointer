@@ -347,6 +347,21 @@ UniquePtr<T> ptr::makeUnique(T* object){
 }
 
 template<typename T>
-SharedPtr<T>  ptr::makeShared(T * object){
+SharedPtr<T>  ptr::makeShared(T* object){
 	return SharedPtr<T>(object);
+}
+
+template<typename T, typename U>
+UniquePtr<T> ptr::uniqueStaticCast(UniquePtr<U> other){
+	return UniquePtr<T>();
+}
+
+template<typename T, typename U>
+SharedPtr<T> ptr::sharedStaticCast(SharedPtr<U> other){
+	return SharedPtr<T>();
+}
+
+template<typename T, typename U>
+WeakPtr<T> ptr::weakStaticCast(WeakPtr<U> other){
+	return WeakPtr<T>();
 }
