@@ -345,3 +345,8 @@ template<typename T>
 UniquePtr<T> ptr::makeUnique(T* object){
 	return UniquePtr<T>(object);
 }
+
+template<typename T>
+SharedPtr<T>  ptr::makeShared(T * object){
+	return SharedPtr<T>(object);
+}

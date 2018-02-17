@@ -204,6 +204,9 @@ protected:
 namespace ptr{
 	template<typename T>
 	UniquePtr<T> makeUnique(T* object);
+
+	template<typename T>
+	SharedPtr<T> makeShared(T* object);
 }
 
 ///////INLINE INCLUDE
