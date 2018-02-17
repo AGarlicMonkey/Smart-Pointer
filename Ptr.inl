@@ -342,6 +342,6 @@ inline void UniquePtr<T, D>::free() {
 
 ///////HELPER FUNCTIONS
 template<typename T>
-UniquePtr<T> ptr::makeShared(T* object){
+UniquePtr<T> ptr::makeUnique(T* object){
 	return UniquePtr<T>(object);
 }

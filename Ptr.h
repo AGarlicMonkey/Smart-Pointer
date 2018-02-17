@@ -203,7 +203,7 @@ protected:
 ///////HELPER FUNCTIONS
 namespace ptr{
 	template<typename T>
-	UniquePtr<T> makeShared(T* object);
+	UniquePtr<T> makeUnique(T* object);
 }
 
 ///////INLINE INCLUDE
