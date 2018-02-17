@@ -214,6 +214,13 @@ namespace ptr{
 	SharedPtr<T> sharedStaticCast(SharedPtr<U> other);
 	template<typename T, typename U>
 	WeakPtr<T> weakStaticCast(WeakPtr<U> other);
+
+	template<typename T, typename U>
+	UniquePtr<T> uniqueDynamicCast(UniquePtr<U> other);
+	template<typename T, typename U>
+	SharedPtr<T> sharedDynamicCast(SharedPtr<U> other);
+	template<typename T, typename U>
+	WeakPtr<T> weakDynamicCast(WeakPtr<U> other);
 }
 
 ///////INLINE INCLUDE

@@ -375,3 +375,32 @@ WeakPtr<T> ptr::weakStaticCast(WeakPtr<U> otherPtr){
 	outPtr.init(otherObj, otherPtr.ref);
 	return outPtr;
 }
+
+
+template<typename T, typename U>
+UniquePtr<T> ptr::uniqueDynamicCast(UniquePtr<U> otherPtr){
+	UniquePtr<T> outPtr;
+	if(T* otherObj = dynamic_cast<T*>(other.object)){
+		outPtr = makeUnique(otherObj);
+		otherPtr.object = nullptr;
+	}
+	return outPtr;
+}
+
+template<typename T, typename U>
+SharedPtr<T> ptr::sharedDynamicCast(SharedPtr<U> otherPtr){
+	SharedPtr<T> outPtr;
+	if(T* otherObj = dynamic_cast<T*>(otherPtr.object)){
+		outPtr.init(otherObj, otherPtr.ref);
+	}
+	return outPtr;
+}
+
+template<typename T, typename U>
+WeakPtr<T> ptr::weakDynamicCast(WeakPtr<U> otherPtr){
+	WeakPtr<T> outPtr;
+	if(T* otherObj = dynamic_cast<T*>(otherPtr.object)){
+		outPtr.init(otherObj, otherPtr.ref);
+	}
+	return outPtr;
+}
