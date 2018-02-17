@@ -200,6 +200,13 @@ protected:
 	virtual void free() override;
 };
 
+///////HELPER FUNCTIONS
+namespace ptr{
+	template<typename T>
+	UniquePtr<T> makeShared(T* object);
+}
+
+///////INLINE INCLUDE
 #include "Ptr.inl"
 
 ///////COMPARISON OPERATORS
