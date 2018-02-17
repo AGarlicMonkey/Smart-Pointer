@@ -339,3 +339,9 @@ inline void UniquePtr<T, D>::free() {
 	}
 	object = nullptr;
 }
+
+///////HELPER FUNCTIONS
+template<typename T>
+UniquePtr<T> ptr::makeShared(T* object){
+	return UniquePtr<T>(object);
+}
