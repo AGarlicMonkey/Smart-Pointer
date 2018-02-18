@@ -351,7 +351,7 @@ SharedPtr<T>  ptr::makeShared(T* object){
 
 template<typename T, typename U>
 UniquePtr<T> ptr::staticCast(UniquePtr<U>& otherPtr){
-	T* otherObj = static_cast<T*>(otherPtr.object);
+	T* otherObj = static_cast<T*>(otherPtr.get());
 	UniquePtr<T> outPtr;
 	outPtr = makeUnique(otherObj);
 	otherPtr.object = nullptr;
@@ -360,7 +360,7 @@ UniquePtr<T> ptr::staticCast(UniquePtr<U>& otherPtr){
 
 template<typename T, typename U>
 SharedPtr<T> ptr::staticCast(const SharedPtr<U>& otherPtr){
-	T* otherObj = static_cast<T*>(otherPtr.object);
+	T* otherObj = static_cast<T*>(otherPtr.get());
 	SharedPtr<T> outPtr;
 	outPtr.init(otherObj, otherPtr.ref);
 	return outPtr;
@@ -368,7 +368,7 @@ SharedPtr<T> ptr::staticCast(const SharedPtr<U>& otherPtr){
 
 template<typename T, typename U>
 WeakPtr<T> ptr::staticCast(const WeakPtr<U>& otherPtr){
-	T* otherObj = static_cast<T*>(otherPtr.object);
+	T* otherObj = static_cast<T*>(otherPtr.get());
 	WeakPtr<T> outPtr;
 	outPtr.init(otherObj, otherPtr.ref);
 	return outPtr;
@@ -377,7 +377,7 @@ WeakPtr<T> ptr::staticCast(const WeakPtr<U>& otherPtr){
 template<typename T, typename U>
 UniquePtr<T> ptr::dynamicCast(UniquePtr<U>& otherPtr){
 	UniquePtr<T> outPtr;
-	if(T* otherObj = dynamic_cast<T*>(otherPtr.object)){
+	if(T* otherObj = dynamic_cast<T*>(otherPtr.get())){
 		outPtr = makeUnique(otherObj);
 		otherPtr.object = nullptr;
 	}
@@ -387,7 +387,7 @@ UniquePtr<T> ptr::dynamicCast(UniquePtr<U>& otherPtr){
 template<typename T, typename U>
 SharedPtr<T> ptr::dynamicCast(const SharedPtr<U>& otherPtr){
 	SharedPtr<T> outPtr;
-	if(T* otherObj = dynamic_cast<T*>(otherPtr.object)){
+	if(T* otherObj = dynamic_cast<T*>(otherPtr.get())){
 		outPtr.init(otherObj, otherPtr.ref);
 	}
 	return outPtr;
@@ -396,7 +396,7 @@ SharedPtr<T> ptr::dynamicCast(const SharedPtr<U>& otherPtr){
 template<typename T, typename U>
 WeakPtr<T> ptr::dynamicCast(const WeakPtr<U>& otherPtr){
 	WeakPtr<T> outPtr;
-	if(T* otherObj = dynamic_cast<T*>(otherPtr.object)){
+	if(T* otherObj = dynamic_cast<T*>(otherPtr.get())){
 		outPtr.init(otherObj, otherPtr.ref);
 	}
 	return outPtr;
