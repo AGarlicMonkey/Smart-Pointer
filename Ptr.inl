@@ -64,6 +64,14 @@ inline SharedPtr<T, D>::SharedPtr(const WeakPtr<U, D>& ptr){
 }
 
 template<typename T, typename D>
+template<typename U>
+inline SharedPtr<T, D>::SharedPtr(const SharedPtr<U, D>& ptr, T* obj){
+	if(ptr.isValid() && obj){
+		init(obj, ptr.ref);
+	}
+}
+
+template<typename T, typename D>
 inline SharedPtr<T, D>::~SharedPtr(){
 	free();
 }
@@ -177,6 +185,14 @@ inline WeakPtr<T, D>::WeakPtr(const SharedPtr<U, D>& ptr){
 }
 
 template<typename T, typename D>
+template<typename U>
+inline WeakPtr<T, D>::WeakPtr(const WeakPtr<U, D>& ptr, T * obj){
+	if(ptr.isValid() && obj){
+		init(obj, ptr.ref);
+	}
+}
+
+template<typename T, typename D>
 inline WeakPtr<T, D>::~WeakPtr(){
 	free();
 }
@@ -238,9 +254,7 @@ inline SharedPtr<T> SharedFromThis<T>::getSharedThis() const{
 template<typename T>
 template<typename U>
 inline WeakPtr<U> SharedFromThis<T>::getWeakThis() const{
-	U* ptr = static_cast<U*>(weakThis.get());
-	WeakPtr<U> outPtr;
-	outPtr.init(ptr, weakThis.ref);
+	WeakPtr<U> outPtr = ptr::staticCast(weakThis);
 	return outPtr;
 }
 
@@ -347,6 +361,35 @@ UniquePtr<T> ptr::makeUnique(T* object){
 }
 
 template<typename T>
-SharedPtr<T>  ptr::makeShared(T * object){
+SharedPtr<T>  ptr::makeShared(T* object){
 	return SharedPtr<T>(object);
+}
+
+template<typename T, typename U>
+SharedPtr<T> ptr::staticCast(const SharedPtr<U>& ptr){
+	T* otherObj = static_cast<T*>(ptr.get());
+	SharedPtr<T> outPtr(ptr, otherObj);
+	return outPtr;
+}
+
+template<typename T, typename U>
+SharedPtr<T> ptr::dynamicCast(const SharedPtr<U>& ptr){
+	if(T* otherObj = dynamic_cast<T*>(ptr.get())){
+		return SharedPtr<T>(ptr, otherObj);
+	}
+	return SharedPtr<T>();
+}
+
+template<typename T, typename U>
+SharedPtr<T> ptr::constCast(const SharedPtr<U>& ptr){
+	T* otherObj = const_cast<T*>(ptr.get());
+	SharedPtr<T> outPtr(ptr, otherObj);
+	return outPtr;
+}
+
+template<typename T, typename U>
+SharedPtr<T> ptr::reinterpretCast(const SharedPtr<U>& ptr){
+	T* otherObj = reinterpret_cast<T*>(ptr.get());
+	SharedPtr<T> outPtr(ptr, otherObj);
+	return outPtr;
 }
