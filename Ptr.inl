@@ -374,11 +374,10 @@ SharedPtr<T> ptr::staticCast(const SharedPtr<U>& ptr){
 
 template<typename T, typename U>
 SharedPtr<T> ptr::dynamicCast(const SharedPtr<U>& ptr){
-	SharedPtr<T> outPtr;
 	if(T* otherObj = dynamic_cast<T*>(ptr.get())){
-		outPtr.init(otherObj, ptr.ref);
+		return SharedPtr<T>(ptr, otherObj);
 	}
-	return outPtr;
+	return SharedPtr<T>();
 }
 
 template<typename T, typename U>
