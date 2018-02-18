@@ -351,7 +351,7 @@ SharedPtr<T>  ptr::makeShared(T* object){
 
 template<typename T, typename U>
 UniquePtr<T> ptr::staticCast(UniquePtr<U>& otherPtr){
-	T* otherObj = static_cast<T*>(other.object);
+	T* otherObj = static_cast<T*>(otherPtr.object);
 	UniquePtr<T> outPtr;
 	outPtr = makeUnique(otherObj);
 	otherPtr.object = nullptr;
@@ -377,7 +377,7 @@ WeakPtr<T> ptr::staticCast(const WeakPtr<U>& otherPtr){
 template<typename T, typename U>
 UniquePtr<T> ptr::dynamicCast(UniquePtr<U>& otherPtr){
 	UniquePtr<T> outPtr;
-	if(T* otherObj = dynamic_cast<T*>(other.object)){
+	if(T* otherObj = dynamic_cast<T*>(otherPtr.object)){
 		outPtr = makeUnique(otherObj);
 		otherPtr.object = nullptr;
 	}
