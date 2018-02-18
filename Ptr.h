@@ -209,18 +209,18 @@ namespace ptr{
 	SharedPtr<T> makeShared(T* object);
 
 	template<typename T, typename U>
-	UniquePtr<T> uniqueStaticCast(UniquePtr<U> other);
+	UniquePtr<T> staticCast(UniquePtr<U> other);
 	template<typename T, typename U>
-	SharedPtr<T> sharedStaticCast(SharedPtr<U> other);
+	SharedPtr<T> staticCast(SharedPtr<U> other);
 	template<typename T, typename U>
-	WeakPtr<T> weakStaticCast(WeakPtr<U> other);
+	WeakPtr<T> staticCast(WeakPtr<U> other);
 
 	template<typename T, typename U>
-	UniquePtr<T> uniqueDynamicCast(UniquePtr<U> other);
+	UniquePtr<T> dynamicCast(UniquePtr<U> other);
 	template<typename T, typename U>
-	SharedPtr<T> sharedDynamicCast(SharedPtr<U> other);
+	SharedPtr<T> dynamicCast(SharedPtr<U> other);
 	template<typename T, typename U>
-	WeakPtr<T> weakDynamicCast(WeakPtr<U> other);
+	WeakPtr<T> dynamicCast(WeakPtr<U> other);
 }
 
 ///////INLINE INCLUDE

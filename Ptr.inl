@@ -350,7 +350,7 @@ SharedPtr<T>  ptr::makeShared(T* object){
 }
 
 template<typename T, typename U>
-UniquePtr<T> ptr::uniqueStaticCast(UniquePtr<U> otherPtr){
+UniquePtr<T> ptr::staticCast(UniquePtr<U> otherPtr){
 	T* otherObj = static_cast<T*>(other.object);
 	UniquePtr<T> outPtr;
 	outPtr = makeUnique(otherObj);
@@ -359,7 +359,7 @@ UniquePtr<T> ptr::uniqueStaticCast(UniquePtr<U> otherPtr){
 }
 
 template<typename T, typename U>
-SharedPtr<T> ptr::sharedStaticCast(SharedPtr<U> otherPtr){
+SharedPtr<T> ptr::staticCast(SharedPtr<U> otherPtr){
 	T* otherObj = static_cast<T*>(otherPtr.object);
 	SharedPtr<T> outPtr;
 	outPtr.init(otherObj, otherPtr.ref);
@@ -367,7 +367,7 @@ SharedPtr<T> ptr::sharedStaticCast(SharedPtr<U> otherPtr){
 }
 
 template<typename T, typename U>
-WeakPtr<T> ptr::weakStaticCast(WeakPtr<U> otherPtr){
+WeakPtr<T> ptr::staticCast(WeakPtr<U> otherPtr){
 	T* otherObj = static_cast<T*>(otherPtr.object);
 	WeakPtr<T> outPtr;
 	outPtr.init(otherObj, otherPtr.ref);
@@ -376,7 +376,7 @@ WeakPtr<T> ptr::weakStaticCast(WeakPtr<U> otherPtr){
 
 
 template<typename T, typename U>
-UniquePtr<T> ptr::uniqueDynamicCast(UniquePtr<U> otherPtr){
+UniquePtr<T> ptr::dynamicCast(UniquePtr<U> otherPtr){
 	UniquePtr<T> outPtr;
 	if(T* otherObj = dynamic_cast<T*>(other.object)){
 		outPtr = makeUnique(otherObj);
@@ -386,7 +386,7 @@ UniquePtr<T> ptr::uniqueDynamicCast(UniquePtr<U> otherPtr){
 }
 
 template<typename T, typename U>
-SharedPtr<T> ptr::sharedDynamicCast(SharedPtr<U> otherPtr){
+SharedPtr<T> ptr::dynamicCast(SharedPtr<U> otherPtr){
 	SharedPtr<T> outPtr;
 	if(T* otherObj = dynamic_cast<T*>(otherPtr.object)){
 		outPtr.init(otherObj, otherPtr.ref);
@@ -395,7 +395,7 @@ SharedPtr<T> ptr::sharedDynamicCast(SharedPtr<U> otherPtr){
 }
 
 template<typename T, typename U>
-WeakPtr<T> ptr::weakDynamicCast(WeakPtr<U> otherPtr){
+WeakPtr<T> ptr::dynamicCast(WeakPtr<U> otherPtr){
 	WeakPtr<T> outPtr;
 	if(T* otherObj = dynamic_cast<T*>(otherPtr.object)){
 		outPtr.init(otherObj, otherPtr.ref);
