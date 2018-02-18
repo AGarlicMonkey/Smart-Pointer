@@ -64,6 +64,14 @@ inline SharedPtr<T, D>::SharedPtr(const WeakPtr<U, D>& ptr){
 }
 
 template<typename T, typename D>
+template<typename U>
+inline SharedPtr<T, D>::SharedPtr(const SharedPtr<U, D>& ptr, T* obj){
+	if(ptr.isValid() && obj){
+		init(obj, ptr.ref);
+	}
+}
+
+template<typename T, typename D>
 inline SharedPtr<T, D>::~SharedPtr(){
 	free();
 }
@@ -177,6 +185,14 @@ inline WeakPtr<T, D>::WeakPtr(const SharedPtr<U, D>& ptr){
 }
 
 template<typename T, typename D>
+template<typename U>
+inline WeakPtr<T, D>::WeakPtr(const WeakPtr<U, D>& ptr, T * obj){
+	if(ptr.isValid() && obj){
+		init(obj, ptr.ref);
+	}
+}
+
+template<typename T, typename D>
 inline WeakPtr<T, D>::~WeakPtr(){
 	free();
 }
@@ -238,7 +254,7 @@ inline SharedPtr<T> SharedFromThis<T>::getSharedThis() const{
 template<typename T>
 template<typename U>
 inline WeakPtr<U> SharedFromThis<T>::getWeakThis() const{
-	WeakPtr<U> outPtr = ptr::weakStaticCast(weakThis);
+	WeakPtr<U> outPtr = ptr::staticCast(weakThis);
 	return outPtr;
 }
 
@@ -350,54 +366,31 @@ SharedPtr<T>  ptr::makeShared(T* object){
 }
 
 template<typename T, typename U>
-UniquePtr<T> ptr::staticCast(UniquePtr<U>& otherPtr){
-	T* otherObj = static_cast<T*>(otherPtr.get());
-	UniquePtr<T> outPtr;
-	outPtr = makeUnique(otherObj);
-	otherPtr.object = nullptr;
+SharedPtr<T> ptr::staticCast(const SharedPtr<U>& ptr){
+	T* otherObj = static_cast<T*>(ptr.get());
+	SharedPtr<T> outPtr(ptr, otherObj);
 	return outPtr;
 }
 
 template<typename T, typename U>
-SharedPtr<T> ptr::staticCast(const SharedPtr<U>& otherPtr){
-	T* otherObj = static_cast<T*>(otherPtr.get());
+SharedPtr<T> ptr::dynamicCast(const SharedPtr<U>& ptr){
 	SharedPtr<T> outPtr;
-	outPtr.init(otherObj, otherPtr.ref);
-	return outPtr;
-}
-
-template<typename T, typename U>
-WeakPtr<T> ptr::staticCast(const WeakPtr<U>& otherPtr){
-	T* otherObj = static_cast<T*>(otherPtr.get());
-	WeakPtr<T> outPtr;
-	outPtr.init(otherObj, otherPtr.ref);
-	return outPtr;
-}
-
-template<typename T, typename U>
-UniquePtr<T> ptr::dynamicCast(UniquePtr<U>& otherPtr){
-	UniquePtr<T> outPtr;
-	if(T* otherObj = dynamic_cast<T*>(otherPtr.get())){
-		outPtr = makeUnique(otherObj);
-		otherPtr.object = nullptr;
+	if(T* otherObj = dynamic_cast<T*>(ptr.get())){
+		outPtr.init(otherObj, ptr.ref);
 	}
 	return outPtr;
 }
 
 template<typename T, typename U>
-SharedPtr<T> ptr::dynamicCast(const SharedPtr<U>& otherPtr){
-	SharedPtr<T> outPtr;
-	if(T* otherObj = dynamic_cast<T*>(otherPtr.get())){
-		outPtr.init(otherObj, otherPtr.ref);
-	}
+SharedPtr<T> ptr::constCast(const SharedPtr<U>& ptr){
+	T* otherObj = const_cast<T*>(ptr.get());
+	SharedPtr<T> outPtr(ptr, otherObj);
 	return outPtr;
 }
 
 template<typename T, typename U>
-WeakPtr<T> ptr::dynamicCast(const WeakPtr<U>& otherPtr){
-	WeakPtr<T> outPtr;
-	if(T* otherObj = dynamic_cast<T*>(otherPtr.get())){
-		outPtr.init(otherObj, otherPtr.ref);
-	}
+SharedPtr<T> ptr::reinterpretCast(const SharedPtr<U>& ptr){
+	T* otherObj = reinterpret_cast<T*>(ptr.get());
+	SharedPtr<T> outPtr(ptr, otherObj);
 	return outPtr;
 }

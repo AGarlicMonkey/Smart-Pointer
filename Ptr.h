@@ -93,6 +93,8 @@ public:
 	template <typename U> SharedPtr(const SharedPtr<U, D>& ptr);
 	template <typename U> SharedPtr(const WeakPtr<U, D>& ptr);
 
+	template <typename U> SharedPtr(const SharedPtr<U, D>& ptr, T* obj);
+
 	~SharedPtr();
 
 	T* operator->();
@@ -131,6 +133,8 @@ public:
 	
 	template<typename U> WeakPtr(const WeakPtr<U, D>& ptr);
 	template<typename U> WeakPtr(const SharedPtr<U, D>& ptr);
+
+	template <typename U> WeakPtr(const WeakPtr<U, D>& ptr, T* obj);
 
 	~WeakPtr();
 
@@ -209,18 +213,17 @@ namespace ptr{
 	SharedPtr<T> makeShared(T* object);
 
 	template<typename T, typename U>
-	UniquePtr<T> staticCast(UniquePtr<U>& other);
+	SharedPtr<T> staticCast(const SharedPtr<U>& ptr);
 	template<typename T, typename U>
-	SharedPtr<T> staticCast(const SharedPtr<U>& other);
+	SharedPtr<T> dynamicCast(const SharedPtr<U>& ptr);
 	template<typename T, typename U>
-	WeakPtr<T> staticCast(const WeakPtr<U>& other);
+	SharedPtr<T> constCast(const SharedPtr<U>& ptr);
+	template<typename T, typename U>
+	SharedPtr<T> reinterpretCast(const SharedPtr<U>& ptr);
 
-	template<typename T, typename U>
-	UniquePtr<T> dynamicCast(UniquePtr<U>& other);
-	template<typename T, typename U>
-	SharedPtr<T> dynamicCast(const SharedPtr<U>& other);
-	template<typename T, typename U>
-	WeakPtr<T> dynamicCast(const WeakPtr<U>& other);
+	//TODO:
+	//const
+	//reinterperet
 }
 
 ///////INLINE INCLUDE
