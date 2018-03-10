@@ -220,10 +220,6 @@ namespace ptr{
 	SharedPtr<T> constCast(const SharedPtr<U>& ptr);
 	template<typename T, typename U>
 	SharedPtr<T> reinterpretCast(const SharedPtr<U>& ptr);
-
-	//TODO:
-	//const
-	//reinterperet
 }
 
 ///////INLINE INCLUDE
