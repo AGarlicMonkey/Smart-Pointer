@@ -212,14 +212,14 @@ namespace ptr{
 	template<typename T>
 	SharedPtr<T> makeShared(T* object);
 
-	template<typename T, typename U>
-	SharedPtr<T> staticCast(const SharedPtr<U>& ptr);
-	template<typename T, typename U>
-	SharedPtr<T> dynamicCast(const SharedPtr<U>& ptr);
-	template<typename T, typename U>
-	SharedPtr<T> constCast(const SharedPtr<U>& ptr);
-	template<typename T, typename U>
-	SharedPtr<T> reinterpretCast(const SharedPtr<U>& ptr);
+	template<typename RetT, typename CurrT>
+	SharedPtr<RetT> staticCast(const SharedPtr<CurrT>& ptr);
+	template<typename RetT, typename CurrT>
+	SharedPtr<RetT> dynamicCast(const SharedPtr<CurrT>& ptr);
+	template<typename RetT, typename CurrT>
+	SharedPtr<RetT> constCast(const SharedPtr<CurrT>& ptr);
+	template<typename RetT, typename CurrT>
+	SharedPtr<RetT> reinterpretCast(const SharedPtr<CurrT>& ptr);
 }
 
 ///////INLINE INCLUDE

@@ -365,31 +365,31 @@ SharedPtr<T>  ptr::makeShared(T* object){
 	return SharedPtr<T>(object);
 }
 
-template<typename T, typename U>
-SharedPtr<T> ptr::staticCast(const SharedPtr<U>& ptr){
-	T* otherObj = static_cast<T*>(ptr.get());
-	SharedPtr<T> outPtr(ptr, otherObj);
+template<typename RetT, typename CurrT>
+SharedPtr<RetT> ptr::staticCast(const SharedPtr<CurrT>& ptr){
+	RetT* otherObj = static_cast<RetT*>(ptr.get());
+	SharedPtr<RetT> outPtr(ptr, otherObj);
 	return outPtr;
 }
 
-template<typename T, typename U>
-SharedPtr<T> ptr::dynamicCast(const SharedPtr<U>& ptr){
-	if(T* otherObj = dynamic_cast<T*>(ptr.get())){
+template<typename RetT, typename CurrT>
+SharedPtr<RetT> ptr::dynamicCast(const SharedPtr<CurrT>& ptr){
+	if(RetT* otherObj = dynamic_cast<RetT*>(ptr.get())){
 		return SharedPtr<T>(ptr, otherObj);
 	}
 	return SharedPtr<T>();
 }
 
-template<typename T, typename U>
-SharedPtr<T> ptr::constCast(const SharedPtr<U>& ptr){
-	T* otherObj = const_cast<T*>(ptr.get());
-	SharedPtr<T> outPtr(ptr, otherObj);
+template<typename RetT, typename CurrT>
+SharedPtr<RetT> ptr::constCast(const SharedPtr<CurrT>& ptr){
+	RetT* otherObj = const_cast<RetT*>(ptr.get());
+	SharedPtr<RetT> outPtr(ptr, otherObj);
 	return outPtr;
 }
 
-template<typename T, typename U>
-SharedPtr<T> ptr::reinterpretCast(const SharedPtr<U>& ptr){
-	T* otherObj = reinterpret_cast<T*>(ptr.get());
-	SharedPtr<T> outPtr(ptr, otherObj);
+template<typename RetT, typename CurrT>
+SharedPtr<RetT> ptr::reinterpretCast(const SharedPtr<CurrT>& ptr){
+	RetT* otherObj = reinterpret_cast<RetT*>(ptr.get());
+	SharedPtr<RetT> outPtr(ptr, otherObj);
 	return outPtr;
 }
