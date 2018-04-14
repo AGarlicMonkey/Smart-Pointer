@@ -442,6 +442,7 @@ namespace ptr{
 		return outPtr;
 	}
 }
+
 ///////COMPARISON OPERATORS
 //T == T
 template<typename T>
