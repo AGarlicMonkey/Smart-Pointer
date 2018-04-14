@@ -254,7 +254,7 @@ inline ptr::SharedPtr<Type> ptr::SharedFromThis<Type>::getSharedThis() const{
 template<typename Type>
 template<typename OtherType>
 inline ptr::WeakPtr<OtherType> ptr::SharedFromThis<Type>::getWeakThis() const{
-	return staticCast<OTherType, Type>(weakThis);
+	return staticCast<OtherType, Type>(weakThis);
 }
 
 template<typename Type>
