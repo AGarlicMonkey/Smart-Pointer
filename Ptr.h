@@ -308,14 +308,14 @@ namespace ptr{
 			return weakThis;
 		}
 		SharedPtr<Type> getSharedThis() const{
-			return weakThis.pin();
+			return SharedPtr<Type>(weakThis);
 		}
 
 		template<typename OtherType> WeakPtr<OtherType> getWeakThis() const{
 			return ptr::staticCast<OtherType, Type>(weakThis);
 		}
 		template<typename OtherType> SharedPtr<OtherType> getSharedThis() const{
-			return getWeakThis<OtherType>().pin();
+			return SharedPtr<OtherType>(getWeakThis<OtherType>());
 		}
 
 	private:
