@@ -283,12 +283,12 @@ inline bool operator!=(const ptr::PtrBase<T>& ptr, const U* object){
 
 //T == nullptr_t
 template<typename T>
-inline bool operator==(const ptr::PtrBase<T>& ptr, nullptr_t object){
+inline bool operator==(const ptr::PtrBase<T>& ptr, std::nullptr_t object){
 	return ptr.get() == object;
 }
 
 //T != nullptr_t
 template<typename T>
-inline bool operator!=(const ptr::PtrBase<T>& ptr, nullptr_t object){
+inline bool operator!=(const ptr::PtrBase<T>& ptr, std::nullptr_t object){
 	return !(ptr == object);
 }
