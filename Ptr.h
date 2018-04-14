@@ -30,27 +30,27 @@ namespace ptr{
 	};
 
 	/////////POINTER TYPES
-	template<typename T, typename D> class RefPtrBase;
-	template<typename T, typename D> class SharedPtr;
-	template<typename T, typename D> class WeakPtr;
-	template<typename T, typename D> class UniquePtr;
+	template<typename Type, typename DeleterType> class RefPtrBase;
+	template<typename Type, typename DeleterType> class SharedPtr;
+	template<typename Type, typename DeleterType> class WeakPtr;
+	template<typename Type, typename DeleterType> class UniquePtr;
 
 	/////////POINTER BASE
-	template<typename T, typename D = DefaultDeleter>
+	template<typename Type, typename DeleterType = DefaultDeleter>
 	class PtrBase{
-		template<typename U, typename D> friend class PtrBase;
+		template<typename OtherType, typename DeleterType> friend class PtrBase;
 
 		//VARIABLES
 	protected:
-		T * object = nullptr;
+		Type* object = nullptr;
 
-		D deleter;
+		DeleterType deleter;
 
 		//FUNCTIONS	
 	public:
 		virtual ~PtrBase() = default;
 
-		T* get() const{
+		Type* get() const{
 			return isValid() ? object : nullptr;
 		}
 		virtual bool isValid() const{
@@ -70,13 +70,13 @@ namespace ptr{
 	};
 
 	/////////REFERENCE POINTER BASE
-	template<typename T, typename D = DefaultDeleter>
-	class RefPtrBase : public PtrBase<T, D>{
-		template<typename U, typename D> friend class RefPtrBase;
+	template<typename Type, typename DeleterType = DefaultDeleter>
+	class RefPtrBase : public PtrBase<Type, DeleterType>{
+		template<typename OtherType, typename DeleterType> friend class RefPtrBase;
 
 		//VARIABLES
 	protected:
-		Counter * ref = nullptr;
+		Counter* ref = nullptr;
 
 		//FUNCTIONS	
 	public:
@@ -88,48 +88,48 @@ namespace ptr{
 	};
 
 	/////////SHARED POINTER
-	template<typename T, typename D = DefaultDeleter>
-	class SharedPtr : public RefPtrBase<T, D>{
-		template<typename U, typename D> friend class SharedPtr;
+	template<typename Type, typename DeleterType = DefaultDeleter>
+	class SharedPtr : public RefPtrBase<Type, DeleterType>{
+		template<typename OtherType, typename DeleterType> friend class SharedPtr;
 
-		template<typename T, typename D> friend class WeakPtr;
-		template<typename U, typename D> friend class WeakPtr;
+		template<typename Type, typename DeleterType> friend class WeakPtr;
+		template<typename OtherType, typename DeleterType> friend class WeakPtr;
 
-		template<typename T> friend class SharedFromThis;
-		template<typename U> friend class SharedFromThis;
+		template<typename Type> friend class SharedFromThis;
+		template<typename OtherType> friend class SharedFromThis;
 
 		//FUNCTIONS
 	public:
 		explicit SharedPtr() = default;
-		explicit SharedPtr(T* inObject){
+		explicit SharedPtr(Type* inObject){
 			if(inObject){
 				init(inObject);
 			}
 		}
 
-		SharedPtr(const SharedPtr<T, D>& ptr){
+		SharedPtr(const SharedPtr<Type, DeleterType>& ptr){
 			if(ptr.isValid()){
 				init(ptr.object, ptr.ref);
 			}
 		}
-		SharedPtr(const WeakPtr<T, D>& ptr){
-			if(ptr.isValid()){
-				init(ptr.object, ptr.ref);
-			}
-		}
-
-		template <typename U> SharedPtr(const SharedPtr<U, D>& ptr){
-			if(ptr.isValid()){
-				init(ptr.object, ptr.ref);
-			}
-		}
-		template <typename U> SharedPtr(const WeakPtr<U, D>& ptr){
+		SharedPtr(const WeakPtr<Type, DeleterType>& ptr){
 			if(ptr.isValid()){
 				init(ptr.object, ptr.ref);
 			}
 		}
 
-		template <typename U> SharedPtr(const SharedPtr<U, D>& ptr, T* obj){
+		template <typename OtherType> SharedPtr(const SharedPtr<OtherType, DeleterType>& ptr){
+			if(ptr.isValid()){
+				init(ptr.object, ptr.ref);
+			}
+		}
+		template <typename OtherType> SharedPtr(const WeakPtr<OtherType, DeleterType>& ptr){
+			if(ptr.isValid()){
+				init(ptr.object, ptr.ref);
+			}
+		}
+
+		template <typename OtherType> SharedPtr(const SharedPtr<OtherType, DeleterType>& ptr, Type* obj){
 			if(ptr.isValid() && obj){
 				init(obj, ptr.ref);
 			}
@@ -139,21 +139,21 @@ namespace ptr{
 			free();
 		}
 
-		T* operator->(){
+		Type* operator->(){
 			return get();
 		}
-		T* operator->() const{
+		Type* operator->() const{
 			return get();
 		}
 
-		T& operator*(){
+		Type& operator*(){
 			return *get();
 		}
-		T& operator*() const{
+		Type& operator*() const{
 			return *get();
 		}
 
-		SharedPtr<T, D>& operator=(T* inObject){
+		SharedPtr<Type, DeleterType>& operator=(Type* inObject){
 			if(object != inObject){
 				free();
 				if(inObject){
@@ -162,7 +162,7 @@ namespace ptr{
 			}
 			return *this;
 		}
-		SharedPtr<T, D>& operator=(const SharedPtr<T, D>& ptr){
+		SharedPtr<Type, DeleterType>& operator=(const SharedPtr<Type, DeleterType>& ptr){
 			if(this != &ptr){
 				free();
 				if(ptr.isValid()){
@@ -171,7 +171,7 @@ namespace ptr{
 			}
 			return *this;
 		}
-		SharedPtr<T, D>& operator=(const WeakPtr<T, D>& ptr){
+		SharedPtr<Type, DeleterType>& operator=(const WeakPtr<Type, DeleterType>& ptr){
 			free();
 			if(ptr.isValid()){
 				init(ptr.object, ptr.ref);
@@ -192,7 +192,7 @@ namespace ptr{
 		}
 
 	private:
-		void init(T* inObject, Counter* inRef = nullptr){
+		void init(Type* inObject, Counter* inRef = nullptr){
 			object = inObject;
 			if(inRef){
 				ref = inRef;
@@ -207,43 +207,43 @@ namespace ptr{
 	};
 
 	/////////WEAK POINTER
-	template<typename T, typename D = DefaultDeleter>
-	class WeakPtr : public RefPtrBase<T, D>{
-		template<typename U, typename D> friend class WeakPtr;
+	template<typename Type, typename DeleterType = DefaultDeleter>
+	class WeakPtr : public RefPtrBase<Type, DeleterType>{
+		template<typename OtherType, typename DeleterType> friend class WeakPtr;
 
-		template<typename T, typename D> friend class SharedPtr;
-		template<typename U, typename D> friend class SharedPtr;
+		template<typename Type, typename DeleterType> friend class SharedPtr;
+		template<typename OtherType, typename DeleterType> friend class SharedPtr;
 
-		template<typename T> friend class SharedFromThis;
-		template<typename U> friend class SharedFromThis;
+		template<typename Type> friend class SharedFromThis;
+		template<typename OtherType> friend class SharedFromThis;
 
 		//FUNCTIONS
 	public:
 		explicit WeakPtr() = default;
 
-		WeakPtr(const WeakPtr<T, D>& ptr){
+		WeakPtr(const WeakPtr<Type, DeleterType>& ptr){
 			if(ptr.isValid()){
 				init(ptr.object, ptr.ref);
 			}
 		}
-		WeakPtr(const SharedPtr<T, D>& ptr){
-			if(ptr.isValid()){
-				init(ptr.object, ptr.ref);
-			}
-		}
-
-		template<typename U> WeakPtr(const WeakPtr<U, D>& ptr){
-			if(ptr.isValid()){
-				init(ptr.object, ptr.ref);
-			}
-		}
-		template<typename U> WeakPtr(const SharedPtr<U, D>& ptr){
+		WeakPtr(const SharedPtr<Type, DeleterType>& ptr){
 			if(ptr.isValid()){
 				init(ptr.object, ptr.ref);
 			}
 		}
 
-		template <typename U> WeakPtr(const WeakPtr<U, D>& ptr, T* obj){
+		template<typename OtherType> WeakPtr(const WeakPtr<OtherType, DeleterType>& ptr){
+			if(ptr.isValid()){
+				init(ptr.object, ptr.ref);
+			}
+		}
+		template<typename OtherType> WeakPtr(const SharedPtr<OtherType, DeleterType>& ptr){
+			if(ptr.isValid()){
+				init(ptr.object, ptr.ref);
+			}
+		}
+
+		template <typename OtherType> WeakPtr(const WeakPtr<OtherType, DeleterType>& ptr, Type* obj){
 			if(ptr.isValid() && obj){
 				init(obj, ptr.ref);
 			}
@@ -253,11 +253,11 @@ namespace ptr{
 			free();
 		}
 
-		SharedPtr<T, D> pin(){
-			return SharedPtr<T, D>(*this);
+		SharedPtr<Type, DeleterType> pin(){
+			return SharedPtr<Type, DeleterType>(*this);
 		}
 
-		WeakPtr<T, D>& operator=(const WeakPtr<T, D>& ptr){
+		WeakPtr<Type, DeleterType>& operator=(const WeakPtr<Type, DeleterType>& ptr){
 			if(this != &ptr){
 				free();
 				if(ptr.isValid()){
@@ -266,7 +266,7 @@ namespace ptr{
 			}
 			return *this;
 		}
-		WeakPtr<T, D>& operator=(const SharedPtr<T, D>& ptr){
+		WeakPtr<Type, DeleterType>& operator=(const SharedPtr<Type, DeleterType>& ptr){
 			free();
 			if(ptr.isValid()){
 				init(ptr.object, ptr.ref);
@@ -284,7 +284,7 @@ namespace ptr{
 		}
 
 	private:
-		void init(T* inObject, Counter* inRef){
+		void init(Type* inObject, Counter* inRef){
 			object = inObject;
 			if(inRef){
 				ref = inRef;
@@ -294,33 +294,33 @@ namespace ptr{
 	};
 
 	/////////SHARED FROM THIS
-	template<typename T>
+	template<typename Type>
 	class SharedFromThis{
-		typedef T shT;
+		typedef Type shT;
 
 		//VARIABLES
 	private:
-		WeakPtr<T> weakThis;
+		WeakPtr<Type> weakThis;
 
 		//FUNCTIONS
 	public:
-		WeakPtr<T> getWeakThis() const{
+		WeakPtr<Type> getWeakThis() const{
 			return weakThis;
 		}
-		SharedPtr<T> getSharedThis() const{
+		SharedPtr<Type> getSharedThis() const{
 			return weakThis.pin();
 		}
 
-		template<typename U> WeakPtr<U> getWeakThis() const{
-			return ptr::staticCast<U, T>(weakThis);
+		template<typename OtherType> WeakPtr<OtherType> getWeakThis() const{
+			return ptr::staticCast<OtherType, Type>(weakThis);
 		}
-		template<typename U> SharedPtr<U> getSharedThis() const{
-			return getWeakThis<U>().pin();
+		template<typename OtherType> SharedPtr<OtherType> getSharedThis() const{
+			return getWeakThis<OtherType>().pin();
 		}
 
 	private:
-		template<typename T>
-		friend void enable(typename T::shT* ptr, SharedPtr<T>* shptr){
+		template<typename Type>
+		friend void enable(typename Type::shT* ptr, SharedPtr<Type>* shptr){
 			if(ptr){
 				ptr->doEnable(ptr, shptr);
 			}
@@ -329,31 +329,31 @@ namespace ptr{
 			//Not of type SharedFromThis - do nothing
 		}
 
-		template<typename U>
-		void doEnable(T* ptr, SharedPtr<U>* shptr){
+		template<typename OtherType>
+		void doEnable(Type* ptr, SharedPtr<OtherType>* shptr){
 			if(ptr && shptr){
 				ptr->weakThis.init(shptr->get(), shptr->ref);
 			}
 		}
 	};
 
-	template<typename T, typename D = DefaultDeleter>
-	class UniquePtr : public PtrBase<T, D>{
-		template<typename U, typename D> friend class UniquePtr;
+	template<typename Type, typename DeleterType = DefaultDeleter>
+	class UniquePtr : public PtrBase<Type, DeleterType>{
+		template<typename OtherType, typename DeleterType> friend class UniquePtr;
 
 		//FUNCTIONS
 	public:
 		explicit UniquePtr() = default;
-		explicit UniquePtr(T* inObject){
+		explicit UniquePtr(Type* inObject){
 			object = inObject;
 		}
 
-		UniquePtr(UniquePtr<T, D>&& ptr){
+		UniquePtr(UniquePtr<Type, DeleterType>&& ptr){
 			object = ptr.object;
 			ptr.object = nullptr;
 		}
 
-		template<typename U> UniquePtr(UniquePtr<U, D>&& ptr){
+		template<typename OtherType> UniquePtr(UniquePtr<OtherType, DeleterType>&& ptr){
 			object = ptr.object;
 			ptr.object = nullptr;
 		}
@@ -362,27 +362,27 @@ namespace ptr{
 			free();
 		}
 
-		UniquePtr<T, D> move(){
-			UniquePtr<T, D> out(object);
+		UniquePtr<Type, DeleterType> move(){
+			UniquePtr<Type, DeleterType> out(object);
 			object = nullptr;
 			return out;
 		}
 
-		T* operator->(){
+		Type* operator->(){
 			return get();
 		}
-		T* operator->() const{
+		Type* operator->() const{
 			return get();
 		}
 
-		T& operator*(){
+		Type& operator*(){
 			return *get();
 		}
-		T& operator*() const{
+		Type& operator*() const{
 			return *get();
 		}
 
-		UniquePtr<T, D>& operator=(UniquePtr<T, D>&& ptr){
+		UniquePtr<Type, DeleterType>& operator=(UniquePtr<Type, DeleterType>&& ptr){
 			if(this != &ptr){
 				if(isValid()){
 					free();
@@ -403,42 +403,42 @@ namespace ptr{
 	};
 
 	///////HELPER FUNCTIONS
-	template<typename T>
-	UniquePtr<T> makeUnique(T* object){
-		return UniquePtr<T>(object);
+	template<typename Type>
+	UniquePtr<Type> makeUnique(Type* object){
+		return UniquePtr<Type>(object);
 	}
 
-	template<typename T>
-	SharedPtr<T> makeShared(T* object){
-		return SharedPtr<T>(object);
+	template<typename Type>
+	SharedPtr<Type> makeShared(Type* object){
+		return SharedPtr<Type>(object);
 	}
 
-	template<typename RetT, typename CurrT>
-	SharedPtr<RetT> staticCast(const SharedPtr<CurrT>& ptr){
-		RetT* otherObj = static_cast<RetT*>(ptr.get());
-		SharedPtr<RetT> outPtr(ptr, otherObj);
+	template<typename ReturnType, typename CurrentType>
+	SharedPtr<ReturnType> staticCast(const SharedPtr<CurrentType>& ptr){
+		ReturnType* otherObj = static_cast<ReturnType*>(ptr.get());
+		SharedPtr<ReturnType> outPtr(ptr, otherObj);
 		return outPtr;
 	}
 
-	template<typename RetT, typename CurrT>
-	SharedPtr<RetT> dynamicCast(const SharedPtr<CurrT>& ptr){
-		if(RetT* otherObj = dynamic_cast<RetT*>(ptr.get())){
+	template<typename ReturnType, typename CurrentType>
+	SharedPtr<ReturnType> dynamicCast(const SharedPtr<CurrentType>& ptr){
+		if(ReturnType* otherObj = dynamic_cast<ReturnType*>(ptr.get())){
 			return SharedPtr<T>(ptr, otherObj);
 		}
 		return SharedPtr<T>();
 	}
 
-	template<typename RetT, typename CurrT>
-	SharedPtr<RetT> constCast(const SharedPtr<CurrT>& ptr){
-		RetT* otherObj = const_cast<RetT*>(ptr.get());
-		SharedPtr<RetT> outPtr(ptr, otherObj);
+	template<typename ReturnType, typename CurrentType>
+	SharedPtr<ReturnType> constCast(const SharedPtr<CurrentType>& ptr){
+		ReturnType* otherObj = const_cast<ReturnType*>(ptr.get());
+		SharedPtr<ReturnType> outPtr(ptr, otherObj);
 		return outPtr;
 	}
 
-	template<typename RetT, typename CurrT>
-	SharedPtr<RetT> reinterpretCast(const SharedPtr<CurrT>& ptr){
-		RetT* otherObj = reinterpret_cast<RetT*>(ptr.get());
-		SharedPtr<RetT> outPtr(ptr, otherObj);
+	template<typename ReturnType, typename CurrentType>
+	SharedPtr<ReturnType> reinterpretCast(const SharedPtr<CurrentType>& ptr){
+		ReturnType* otherObj = reinterpret_cast<ReturnType*>(ptr.get());
+		SharedPtr<ReturnType> outPtr(ptr, otherObj);
 		return outPtr;
 	}
 }
