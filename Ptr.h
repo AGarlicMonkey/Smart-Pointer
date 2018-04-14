@@ -423,9 +423,9 @@ namespace ptr{
 	template<typename ReturnType, typename CurrentType>
 	SharedPtr<ReturnType> dynamicCast(const SharedPtr<CurrentType>& ptr){
 		if(ReturnType* otherObj = dynamic_cast<ReturnType*>(ptr.get())){
-			return SharedPtr<T>(ptr, otherObj);
+			return SharedPtr<ReturnType>(ptr, otherObj);
 		}
-		return SharedPtr<T>();
+		return SharedPtr<ReturnType>();
 	}
 
 	template<typename ReturnType, typename CurrentType>
