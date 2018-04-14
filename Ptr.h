@@ -1,7 +1,5 @@
 #pragma once
 
-#include <list>
-
 namespace ptr{
 	/////////COUNTER
 	class Counter{
