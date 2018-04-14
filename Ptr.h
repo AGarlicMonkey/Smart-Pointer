@@ -310,7 +310,7 @@ namespace ptr{
 		}
 
 		template<typename OtherType> WeakPtr<OtherType> getWeakThis() const{
-			return ptr::staticCast<OtherType, Type>(weakThis);
+			return staticCast<OtherType, Type>(weakThis);
 		}
 		template<typename OtherType> SharedPtr<OtherType> getSharedThis() const{
 			return SharedPtr<OtherType>(getWeakThis<OtherType>());
