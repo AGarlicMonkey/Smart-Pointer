@@ -2,6 +2,7 @@
 
 #include <list>
 
+/////////COUNTER
 class Counter{
 	//VARIALBES
 private:
@@ -20,18 +21,20 @@ public:
 	inline int weakRelease(){ return --weakCount; }
 };
 
+/////////DEFAULT DELETER
 struct DefaultDeleter{
 	void operator()(void* ptr){
 		delete ptr;
 	}
 };
 
-//Pointer types
+/////////POINTER TYPES
 template<typename T, typename D> class RefPtrBase;
 template<typename T, typename D> class SharedPtr;
 template<typename T, typename D> class WeakPtr;
 template<typename T, typename D> class UniquePtr;
 
+/////////POINTER BASE
 template<typename T, typename D = DefaultDeleter>
 class PtrBase{
 	template<typename U, typename D> friend class PtrBase;
@@ -57,6 +60,7 @@ protected:
 	virtual void free() = 0;
 };
 
+/////////REFERENCE POINTER BASE
 template<typename T, typename D = DefaultDeleter>
 class RefPtrBase : public PtrBase<T, D>{
 	template<typename U, typename D> friend class RefPtrBase;
@@ -72,6 +76,7 @@ public:
 	virtual bool isValid() const override;
 };
 
+/////////SHARED POINTER
 template<typename T, typename D = DefaultDeleter>
 class SharedPtr : public RefPtrBase<T, D>{
 	template<typename U, typename D> friend class SharedPtr;
@@ -114,6 +119,7 @@ private:
 	void init(T* inObject, Counter* inRef = nullptr);
 };
 
+/////////WEAK POINTER
 template<typename T, typename D = DefaultDeleter>
 class WeakPtr : public RefPtrBase<T, D>{
 	template<typename U, typename D> friend class WeakPtr;
@@ -150,6 +156,7 @@ private:
 	void init(T* inObject, Counter* inRef);
 };
 
+/////////SHARED FROM THIS
 template<typename T>
 class SharedFromThis{
 	typedef T shT;
