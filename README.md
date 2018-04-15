@@ -216,7 +216,7 @@ ptr::UniquePtr<MyObj> ptr2 = ptr1.move();
 All three pointer types mentioned can have custom deleters assigned to them if your object requires specific functionality to be performed before you delete it
 
 #### Usage
-```C+++
+```C++
 class MyObj{
   public:
   int x;
