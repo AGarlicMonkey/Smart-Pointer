@@ -106,7 +106,7 @@ A ```WeakPtr``` is similar to a SharedPtr except for a few key differences.
 1. A ```WeakPtr``` can only be initialised from a ```SharedPtr```.
 2. A ```WeakPtr``` will not keep an object alive, once the last ```SharedPtr``` has been reset the object will be deleted.
 3. A ```WeakPtr``` does not overload any operators, there for you can only access it with ```get();```.
-4. WeakPtr has a ```pin();``` function which returns a SharedPtr to the pointer to object (if there is one).
+4. WeakPtr has a ```pin();``` function which returns a SharedPtr to the pointed to object (if there is one).
 
 #### Usage
 ```C++
