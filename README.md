@@ -98,7 +98,7 @@ ptr::SharedPtr<const int> ci = ptr::constCast<const int>(i);
 //Reinterpret
 struct S{ int a; };
 ptr::SharedPtr<S> structPtr = ptr::makeShared(new S());
-ptr::SharedPtr<int> intPtr = reinterpretCast<int>(structPtr);
+ptr::SharedPtr<int> intPtr = ptr::reinterpretCast<int>(structPtr);
 ```
 
 ### Weak Pointer
