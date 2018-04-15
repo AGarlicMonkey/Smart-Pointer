@@ -9,7 +9,18 @@ This was a project that was started for educational purposes and will be maintai
 
 **Use with caution!**
 
-## Shared Pointer
+#
+
+1. [Shared Pointer](#SP)
+2. [Casting](#Ca)
+3. [Weak Pointer](#WP)
+4. [SharedFromThis](#SFT)
+5. [Unique Pointer](#UP)
+6. [Custom Deleters](#CD)
+
+#
+
+## <a name="SP"></a> Shared Pointer
 A ```SharedPtr``` is a way to keep a strong reference to an object - while at least one ```SharedPtr``` is pointing to an object that object will not be deleted.
 
 #### Usage
@@ -79,7 +90,7 @@ ptr::SharedPtr<MyObj> myPtr2 = myPtr1;
 ```
 
 
-### Casting
+### <a name="Ca"></a> Casting
 Currently **only SharedPtr** can be cast. This does however support the four casting types; static, dynamic, const and reiniterpret.
 
 ```C++
@@ -101,7 +112,7 @@ ptr::SharedPtr<S> structPtr = ptr::makeShared(new S());
 ptr::SharedPtr<int> intPtr = ptr::reinterpretCast<int>(structPtr);
 ```
 
-### Weak Pointer
+### <a name="WP"></a> Weak Pointer
 A ```WeakPtr``` is similar to a SharedPtr except for a few key differences.
 1. A ```WeakPtr``` can only be initialised from a ```SharedPtr```.
 2. A ```WeakPtr``` will not keep an object alive, once the last ```SharedPtr``` has been reset the object will be deleted.
@@ -134,7 +145,7 @@ if(myWeakPtr){
 }
 ```
 
-### Shared From This
+### <a name="SFT"></a> Shared From This
 The class ```SharedFromThis``` can be inherited from to allow you to construct ```SharedPtr```s or ```WeakPtr```s from raw objects.
 
 #### Usage
@@ -175,7 +186,7 @@ ptr::WeakPtr<MyDerivedObj> ptr3(rawBs);
 ptr::WeakPtr<MyDerivedObj> ptr4 = rawObjPtr->getWeakThis<MyDerivedObj>();
 ```
 
-## Unique Pointer
+## <a name="UP"></a> Unique Pointer
 The key difference between a ```UniquePtr``` and a ```SharedPtr``` or ```WeakPtr``` is that only one ```UniquePtr``` can be pointing to an object at any one time. Assigning a ```UniquePtr``` to another means the original ```UniqePtr``` has to give up ownership.
 
 #### Usage
@@ -212,7 +223,7 @@ ptr::UniquePtr<MyObj> ptr2 = ptr1.move();
 //ptr1 is no longer valid - ptr2 now has ownership and is responsible for the object's life time 
 ```
 
-## Custom Deleters
+## <a name="CD"></a> Custom Deleters
 All three pointer types mentioned can have custom deleters assigned to them if your object requires specific functionality to be performed before you delete it
 
 #### Usage
