@@ -71,7 +71,7 @@ A ```SharedPtr``` will also be reset once it leaves a scope.
 //MyObj pointed to by myPtr has now been cleaned up
 ```
 
-You can also use a ```SharedPtr``` to initiailise another one.
+You can also use a ```SharedPtr``` to initialise another one.
 
 ```C++
 ptr::SharedPtr<MyObj> myPtr1 = ptr::makeShared(new MyObj());
