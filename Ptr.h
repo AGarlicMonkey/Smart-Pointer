@@ -27,6 +27,9 @@ namespace ptr{
 		void operator()(void* ptr){
 			delete ptr;
 		}
+		void operator()(const void* ptr){
+			delete ptr;
+		}
 	};
 
 	/////////POINTER TYPES
