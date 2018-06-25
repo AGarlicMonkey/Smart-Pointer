@@ -1,6 +1,8 @@
 # Smart Pointer
 This is a C++ reference counted smart pointer solution.
 
+Version 1.0.0
+
 **_Disclaimer_**
 
 Making an effecient reference counting system is complicated and difficult, so I do not recommend using this in any serious project. If you need a reference counted / smart pointer solution in your project then I would recommend using the [std smart pointer](https://msdn.microsoft.com/en-us/library/hh279674.aspx?f=255&MSPPError=-2147217396).
