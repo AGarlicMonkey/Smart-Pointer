@@ -155,37 +155,34 @@ The class ```SharedFromThis``` can be inherited from to allow you to construct `
 class MyObj : public SharedFromThis<MyObj>{
   public:
   int x;
+  
+  void spawnObj();
+};
+
+class ChildObj{
+  public:
+  ptr::WeakPtr<MyObj> owner;
+};
+
+void MyObj::spawnObj(){
+  ptr::SharedPtr<ChildObj> spawnedChild = ptr::makeShared(new ChildObj());
+  
+  //You can use getWeakThis();
+  spawnedChild->owner = getWeakThis();
+  //Or you can use getSharedThis();
+  spawnedChild->owner = getSharedThis();
 }
-
-MyObj* rawObjPtr = new MyObj();
-
-//Shared
-ptr::SharedPtr<MyObj> ptr1(rawBs);
-ptr::SharedPtr<MyObj> ptr2 = rawObjPtr->getSharedThis();
-
-//Weak
-ptr::WeakPtr<MyObj> ptr3(rawBs);
-ptr::WeakPtr<MyObj> ptr4 = rawObjPtr->getWeakThis();
 ```
 
-```getSharedThis();``` and ```getWeakThis();``` are also templated.
+```getSharedThis();``` and ```getWeakThis();``` are also templated if you need to return a specific type.
 
 ```C++
-class MyDerivedObj : public MyObj{
-  public:
-  int y;
+void MyObj::spawnObj(){
+  ptr::SharedPtr<ChildObj> spawnedChild = ptr::makeShared(new ChildObj());
+  
+  spawnedChild->owner = getWeakThis<DerivedObj>();
+  spawnedChild->owner = getSharedThis<DerivedObj>();
 }
-
-
-MyDerivedObj* rawObjPtr = new MyDerivedObj();
-
-//Shared
-ptr::SharedPtr<MyDerivedObj> ptr1(rawBs);
-ptr::SharedPtr<MyDerivedObj> ptr2 = rawObjPtr->getSharedThis<MyDerivedObj>();
-
-//Weak
-ptr::WeakPtr<MyDerivedObj> ptr3(rawBs);
-ptr::WeakPtr<MyDerivedObj> ptr4 = rawObjPtr->getWeakThis<MyDerivedObj>();
 ```
 
 ## <a name="UP"></a> Unique Pointer
