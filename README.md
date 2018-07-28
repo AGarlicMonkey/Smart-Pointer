@@ -148,7 +148,7 @@ if(myWeakPtr){
 ```
 
 ### <a name="SFT"></a> Shared From This
-The class ```SharedFromThis``` can be inherited from to allow you to construct ```SharedPtr```s or ```WeakPtr```s from raw objects.
+The class ```SharedFromThis``` can be inherited from to allow you to construct ```SharedPtr```s or ```WeakPtr```s.
 
 #### Usage
 ```C++
