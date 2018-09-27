@@ -96,10 +96,16 @@ namespace ptr{
 		explicit SharedPtr(Type* inObject);
 
 		SharedPtr(const SharedPtr<Type, DeleterType>& ptr);
+		SharedPtr(const SharedPtr<Type, DeleterType>&& ptr);
+
 		SharedPtr(const WeakPtr<Type, DeleterType>& ptr);
+		SharedPtr(const WeakPtr<Type, DeleterType>&& ptr);
 
 		template<typename OtherType> SharedPtr(const SharedPtr<OtherType, DeleterType>& ptr);
+		template<typename OtherType> SharedPtr(const SharedPtr<OtherType, DeleterType>&& ptr);
+
 		template<typename OtherType> SharedPtr(const WeakPtr<OtherType, DeleterType>& ptr);
+		template<typename OtherType> SharedPtr(const WeakPtr<OtherType, DeleterType>&& ptr);
 
 		template <typename OtherType> SharedPtr(const SharedPtr<OtherType, DeleterType>& ptr, Type* obj);
 
@@ -138,10 +144,16 @@ namespace ptr{
 		explicit WeakPtr() = default;
 
 		WeakPtr(const WeakPtr<Type, DeleterType>& ptr);
+		WeakPtr(const WeakPtr<Type, DeleterType>&& ptr);
+
 		WeakPtr(const SharedPtr<Type, DeleterType>& ptr);
+		WeakPtr(const SharedPtr<Type, DeleterType>&& ptr);
 
 		template<typename OtherType> WeakPtr(const WeakPtr<OtherType, DeleterType>& ptr);
+		template<typename OtherType> WeakPtr(const WeakPtr<OtherType, DeleterType>&& ptr);
+
 		template<typename OtherType> WeakPtr(const SharedPtr<OtherType, DeleterType>& ptr);
+		template<typename OtherType> WeakPtr(const SharedPtr<OtherType, DeleterType>&& ptr);
 
 		template <typename OtherType> WeakPtr(const WeakPtr<OtherType, DeleterType>& ptr, Type* obj);
 
