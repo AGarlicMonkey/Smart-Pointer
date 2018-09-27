@@ -155,8 +155,6 @@ namespace ptr{
 		template<typename OtherType> WeakPtr(const SharedPtr<OtherType, DeleterType>& ptr);
 		template<typename OtherType> WeakPtr(const SharedPtr<OtherType, DeleterType>&& ptr);
 
-		template <typename OtherType> WeakPtr(const WeakPtr<OtherType, DeleterType>& ptr, Type* obj);
-
 		~WeakPtr();
 
 		SharedPtr<Type, DeleterType> pin();

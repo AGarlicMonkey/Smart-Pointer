@@ -246,14 +246,6 @@ inline ptr::WeakPtr<Type, DeleterType>::WeakPtr(const ptr::SharedPtr<OtherType, 
 }
 
 template<typename Type, typename DeleterType>
-template<typename OtherType>
-inline ptr::WeakPtr<Type, DeleterType>::WeakPtr(const ptr::WeakPtr<OtherType, DeleterType>& ptr, Type* obj){
-	if(ptr.isValid() && obj){
-		init(obj, ptr.ref);
-	}
-}
-
-template<typename Type, typename DeleterType>
 inline ptr::WeakPtr<Type, DeleterType>::~WeakPtr(){
 	free();
 }
