@@ -22,7 +22,7 @@ inline ptr::PtrBase<Type, DeleterType>::operator bool() const{
 /////////REFERENCE POINTER BASE
 template<typename Type, typename DeleterType>
 inline bool ptr::RefPtrBase<Type, DeleterType>::isValid() const{
-	return ref ? ref->check() > 0 ? object != nullptr : false : false;
+	return (ref && ref->check() > 0) ? object != nullptr : false;
 }
 
 /////////SHARED POINTER
