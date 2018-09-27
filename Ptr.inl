@@ -22,7 +22,7 @@ inline ptr::PtrBase<Type, DeleterType>::operator bool() const{
 /////////REFERENCE POINTER BASE
 template<typename Type, typename DeleterType>
 inline bool ptr::RefPtrBase<Type, DeleterType>::isValid() const{
-	return ref ? ref->check() > 0 ? object != nullptr : false : false;
+	return (ref && ref->check() > 0) ? object != nullptr : false;
 }
 
 /////////SHARED POINTER
@@ -41,7 +41,21 @@ inline ptr::SharedPtr<Type, DeleterType>::SharedPtr(const ptr::SharedPtr<Type, D
 }
 
 template<typename Type, typename DeleterType>
+inline ptr::SharedPtr<Type, DeleterType>::SharedPtr(const ptr::SharedPtr<Type, DeleterType>&& ptr){
+	if(ptr.isValid()){
+		init(ptr.object, ptr.ref);
+	}
+}
+
+template<typename Type, typename DeleterType>
 inline ptr::SharedPtr<Type, DeleterType>::SharedPtr(const ptr::WeakPtr<Type, DeleterType>& ptr){
+	if(ptr.isValid()){
+		init(ptr.object, ptr.ref);
+	}
+}
+
+template<typename Type, typename DeleterType>
+inline ptr::SharedPtr<Type, DeleterType>::SharedPtr(const ptr::WeakPtr<Type, DeleterType>&& ptr){
 	if(ptr.isValid()){
 		init(ptr.object, ptr.ref);
 	}
@@ -57,11 +71,28 @@ inline ptr::SharedPtr<Type, DeleterType>::SharedPtr(const ptr::SharedPtr<OtherTy
 
 template<typename Type, typename DeleterType>
 template<typename OtherType>
+inline ptr::SharedPtr<Type, DeleterType>::SharedPtr(const ptr::SharedPtr<OtherType, DeleterType>&& ptr){
+	if(ptr.isValid()){
+		init(ptr.object, ptr.ref);
+	}
+}
+
+template<typename Type, typename DeleterType>
+template<typename OtherType>
 inline ptr::SharedPtr<Type, DeleterType>::SharedPtr(const ptr::WeakPtr<OtherType, DeleterType>& ptr){
 	if(ptr.isValid()){
 		init(ptr.object, ptr.ref);
 	}
 }
+
+template<typename Type, typename DeleterType>
+template<typename OtherType>
+inline ptr::SharedPtr<Type, DeleterType>::SharedPtr(const ptr::WeakPtr<OtherType, DeleterType>&& ptr){
+	if(ptr.isValid()){
+		init(ptr.object, ptr.ref);
+	}
+}
+
 
 template<typename Type, typename DeleterType>
 template<typename OtherType>
@@ -162,7 +193,21 @@ inline ptr::WeakPtr<Type, DeleterType>::WeakPtr(const ptr::WeakPtr<Type, Deleter
 }
 
 template<typename Type, typename DeleterType>
+inline ptr::WeakPtr<Type, DeleterType>::WeakPtr(const ptr::WeakPtr<Type, DeleterType>&& ptr){
+	if(ptr.isValid()){
+		init(ptr.object, ptr.ref);
+	}
+}
+
+template<typename Type, typename DeleterType>
 inline ptr::WeakPtr<Type, DeleterType>::WeakPtr(const ptr::SharedPtr<Type, DeleterType>& ptr){
+	if(ptr.isValid()){
+		init(ptr.object, ptr.ref);
+	}
+}
+
+template<typename Type, typename DeleterType>
+inline ptr::WeakPtr<Type, DeleterType>::WeakPtr(const ptr::SharedPtr<Type, DeleterType>&& ptr){
 	if(ptr.isValid()){
 		init(ptr.object, ptr.ref);
 	}
@@ -178,6 +223,14 @@ inline ptr::WeakPtr<Type, DeleterType>::WeakPtr(const ptr::WeakPtr<OtherType, De
 
 template<typename Type, typename DeleterType>
 template<typename OtherType>
+inline ptr::WeakPtr<Type, DeleterType>::WeakPtr(const ptr::WeakPtr<OtherType, DeleterType>&& ptr){
+	if(ptr.isValid()){
+		init(ptr.object, ptr.ref);
+	}
+}
+
+template<typename Type, typename DeleterType>
+template<typename OtherType>
 inline ptr::WeakPtr<Type, DeleterType>::WeakPtr(const ptr::SharedPtr<OtherType, DeleterType>& ptr){
 	if(ptr.isValid()){
 		init(ptr.object, ptr.ref);
@@ -186,9 +239,9 @@ inline ptr::WeakPtr<Type, DeleterType>::WeakPtr(const ptr::SharedPtr<OtherType, 
 
 template<typename Type, typename DeleterType>
 template<typename OtherType>
-inline ptr::WeakPtr<Type, DeleterType>::WeakPtr(const ptr::WeakPtr<OtherType, DeleterType>& ptr, Type* obj){
-	if(ptr.isValid() && obj){
-		init(obj, ptr.ref);
+inline ptr::WeakPtr<Type, DeleterType>::WeakPtr(const ptr::SharedPtr<OtherType, DeleterType>&& ptr){
+	if(ptr.isValid()){
+		init(ptr.object, ptr.ref);
 	}
 }
 
