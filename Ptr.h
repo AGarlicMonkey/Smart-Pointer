@@ -118,8 +118,12 @@ namespace ptr{
 		Type& operator*() const;
 
 		SharedPtr<Type, DeleterType>& operator=(Type* inObject);
+
 		SharedPtr<Type, DeleterType>& operator=(const SharedPtr<Type, DeleterType>& ptr);
+		SharedPtr<Type, DeleterType>& operator=(const SharedPtr<Type, DeleterType>&& ptr);
+
 		SharedPtr<Type, DeleterType>& operator=(const WeakPtr<Type, DeleterType>& ptr);
+		SharedPtr<Type, DeleterType>& operator=(const WeakPtr<Type, DeleterType>&& ptr);
 
 	protected:
 		virtual void free() override;
@@ -160,7 +164,10 @@ namespace ptr{
 		SharedPtr<Type, DeleterType> pin();
 
 		WeakPtr<Type, DeleterType>& operator=(const WeakPtr<Type, DeleterType>& ptr);
+		WeakPtr<Type, DeleterType>& operator=(const WeakPtr<Type, DeleterType>&& ptr);
+
 		WeakPtr<Type, DeleterType>& operator=(const SharedPtr<Type, DeleterType>& ptr);
+		WeakPtr<Type, DeleterType>& operator=(const SharedPtr<Type, DeleterType>&& ptr);
 
 	protected:
 		virtual void free() override;

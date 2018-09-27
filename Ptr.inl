@@ -150,7 +150,27 @@ inline ptr::SharedPtr<Type, DeleterType>& ptr::SharedPtr<Type, DeleterType>::ope
 }
 
 template<typename Type, typename DeleterType>
+inline ptr::SharedPtr<Type, DeleterType>& ptr::SharedPtr<Type, DeleterType>::operator=(const ptr::SharedPtr<Type, DeleterType>&& ptr){
+	if(this != &ptr){
+		free();
+		if(ptr.isValid()){
+			init(ptr.object, ptr.ref);
+		}
+	}
+	return *this;
+}
+
+template<typename Type, typename DeleterType>
 inline ptr::SharedPtr<Type, DeleterType>& ptr::SharedPtr<Type, DeleterType>::operator=(const ptr::WeakPtr<Type, DeleterType>& ptr){
+	free();
+	if(ptr.isValid()){
+		init(ptr.object, ptr.ref);
+	}
+	return *this;
+}
+
+template<typename Type, typename DeleterType>
+inline ptr::SharedPtr<Type, DeleterType>& ptr::SharedPtr<Type, DeleterType>::operator=(const ptr::WeakPtr<Type, DeleterType>&& ptr){
 	free();
 	if(ptr.isValid()){
 		init(ptr.object, ptr.ref);
@@ -267,7 +287,27 @@ inline ptr::WeakPtr<Type, DeleterType>& ptr::WeakPtr<Type, DeleterType>::operato
 }
 
 template<typename Type, typename DeleterType>
+inline ptr::WeakPtr<Type, DeleterType>& ptr::WeakPtr<Type, DeleterType>::operator=(const ptr::WeakPtr<Type, DeleterType>&& ptr){
+	if(this != &ptr){
+		free();
+		if(ptr.isValid()){
+			init(ptr.object, ptr.ref);
+		}
+	}
+	return *this;
+}
+
+template<typename Type, typename DeleterType>
 inline ptr::WeakPtr<Type, DeleterType>& ptr::WeakPtr<Type, DeleterType>::operator=(const ptr::SharedPtr<Type, DeleterType>& ptr){
+	free();
+	if(ptr.isValid()){
+		init(ptr.object, ptr.ref);
+	}
+	return *this;
+}
+
+template<typename Type, typename DeleterType>
+inline ptr::WeakPtr<Type, DeleterType>& ptr::WeakPtr<Type, DeleterType>::operator=(const ptr::SharedPtr<Type, DeleterType>&& ptr){
 	free();
 	if(ptr.isValid()){
 		init(ptr.object, ptr.ref);
