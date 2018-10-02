@@ -358,7 +358,7 @@ inline ptr::SharedPtr<OtherType> ptr::SharedFromThis<Type>::getSharedThis() cons
 
 namespace ptr{
 	template<typename Type>
-	inline void enable(typename Type::SharedType* ptr, ptr::SharedPtr<Type>* shptr){
+	inline void enable(typename Type::DerivedObjectType* ptr, ptr::SharedPtr<Type>* shptr){
 		if(ptr){
 			ptr->doEnable(ptr, shptr);
 		}
