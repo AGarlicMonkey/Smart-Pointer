@@ -179,7 +179,7 @@ namespace ptr{
 	/////////SHARED FROM THIS
 	template<typename Type>
 	class SharedFromThis{
-		typedef Type DerivedObjectType;
+		typedef Type SharedFromThisType;
 
 		//VARIABLES
 	private:
@@ -195,7 +195,7 @@ namespace ptr{
 
 	private:
 		template<typename Type>
-		friend void enable(typename Type::DerivedObjectType* ptr, SharedPtr<Type>* shptr);
+		friend void enable(typename Type::SharedFromThisType* ptr, SharedPtr<Type>* shptr);
 		friend void enable(const volatile void* ptr, const volatile void* shptr);
 
 		template<typename PtrType>
