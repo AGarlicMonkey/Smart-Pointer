@@ -1,7 +1,7 @@
 # Smart Pointer
 This is a C++ reference counted smart pointer solution.
 
-Version 1.0.4
+Version 1.0.5
 
 **_Disclaimer_**
 
