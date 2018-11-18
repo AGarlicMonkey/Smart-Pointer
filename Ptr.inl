@@ -109,22 +109,22 @@ inline ptr::SharedPtr<Type, DeleterType>::~SharedPtr(){
 
 template<typename Type, typename DeleterType>
 inline Type* ptr::SharedPtr<Type, DeleterType>::operator->(){
-	return get();
+	return this->get();
 }
 
 template<typename Type, typename DeleterType>
 inline Type* ptr::SharedPtr<Type, DeleterType>::operator->() const{
-	return get();
+	return this->get();
 }
 
 template<typename Type, typename DeleterType>
 inline Type& ptr::SharedPtr<Type, DeleterType>::operator*(){
-	return *get();
+	return *(this->get());
 }
 
 template<typename Type, typename DeleterType>
 inline Type& ptr::SharedPtr<Type, DeleterType>::operator*() const{
-	return *get();
+	return *(this->get());
 }
 
 template<typename Type, typename DeleterType>
@@ -181,7 +181,7 @@ inline ptr::SharedPtr<Type, DeleterType>& ptr::SharedPtr<Type, DeleterType>::ope
 template<typename Type, typename DeleterType>
 inline void ptr::SharedPtr<Type, DeleterType>::free(){
 	if(ref && ref->release() == 0){
-		deleter(get());
+		deleter(this->get());
 		if(ref->fullCheck() == 0){
 			delete ref;
 		}
@@ -410,28 +410,28 @@ inline ptr::UniquePtr<Type, DeleterType> ptr::UniquePtr<Type, DeleterType>::move
 
 template<typename Type, typename DeleterType>
 inline Type* ptr::UniquePtr<Type, DeleterType>::operator->(){
-	return get();
+	return this->get();
 }
 
 template<typename Type, typename DeleterType>
 inline Type* ptr::UniquePtr<Type, DeleterType>::operator->() const{
-	return get();
+	return this->get();
 }
 
 template<typename Type, typename DeleterType>
 inline Type& ptr::UniquePtr<Type, DeleterType>::operator*(){
-	return *get();
+	return *(this->get());
 }
 
 template<typename Type, typename DeleterType>
 inline Type& ptr::UniquePtr<Type, DeleterType>::operator*() const{
-	return *get();
+	return *(this->get());
 }
 
 template<typename Type, typename DeleterType>
 inline ptr::UniquePtr<Type, DeleterType>& ptr::UniquePtr<Type, DeleterType>::operator=(ptr::UniquePtr<Type, DeleterType>&& ptr){
 	if(this != &ptr){
-		if(isValid()){
+		if(this->isValid()){
 			free();
 		}
 		object = ptr.object;
@@ -442,8 +442,8 @@ inline ptr::UniquePtr<Type, DeleterType>& ptr::UniquePtr<Type, DeleterType>::ope
 
 template<typename Type, typename DeleterType>
 inline void ptr::UniquePtr<Type, DeleterType>::free(){
-	if(isValid()){
-		deleter(get());
+	if(this->isValid()){
+		deleter(this->get());
 	}
 	object = nullptr;
 }
