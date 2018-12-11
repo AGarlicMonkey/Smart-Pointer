@@ -252,7 +252,7 @@ namespace ptr{
 /////////INLINE INCLUDE
 #include "Ptr.inl"
 
-/////////COMPARISON operator S
+/////////COMPARISON OPERATORS
 //T == T
 template<typename T>
 inline bool operator ==(const ptr::PtrBase<T>& lptr, const ptr::PtrBase<T>& rptr){
