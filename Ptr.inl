@@ -108,27 +108,27 @@ inline ptr::SharedPtr<Type, DeleterType>::~SharedPtr(){
 }
 
 template<typename Type, typename DeleterType>
-inline Type* ptr::SharedPtr<Type, DeleterType>::operator->(){
+inline Type* ptr::SharedPtr<Type, DeleterType>::operator ->(){
 	return get();
 }
 
 template<typename Type, typename DeleterType>
-inline Type* ptr::SharedPtr<Type, DeleterType>::operator->() const{
+inline Type* ptr::SharedPtr<Type, DeleterType>::operator ->() const{
 	return get();
 }
 
 template<typename Type, typename DeleterType>
-inline Type& ptr::SharedPtr<Type, DeleterType>::operator*(){
+inline Type& ptr::SharedPtr<Type, DeleterType>::operator *(){
 	return *get();
 }
 
 template<typename Type, typename DeleterType>
-inline Type& ptr::SharedPtr<Type, DeleterType>::operator*() const{
+inline Type& ptr::SharedPtr<Type, DeleterType>::operator *() const{
 	return *get();
 }
 
 template<typename Type, typename DeleterType>
-inline ptr::SharedPtr<Type, DeleterType>& ptr::SharedPtr<Type, DeleterType>::operator=(Type* inObject){
+inline ptr::SharedPtr<Type, DeleterType>& ptr::SharedPtr<Type, DeleterType>::operator =(Type* inObject){
 	if(object != inObject){
 		free();
 		if(inObject){
@@ -139,7 +139,7 @@ inline ptr::SharedPtr<Type, DeleterType>& ptr::SharedPtr<Type, DeleterType>::ope
 }
 
 template<typename Type, typename DeleterType>
-inline ptr::SharedPtr<Type, DeleterType>& ptr::SharedPtr<Type, DeleterType>::operator=(const ptr::SharedPtr<Type, DeleterType>& ptr){
+inline ptr::SharedPtr<Type, DeleterType>& ptr::SharedPtr<Type, DeleterType>::operator =(const ptr::SharedPtr<Type, DeleterType>& ptr){
 	if(this != &ptr){
 		free();
 		if(ptr.isValid()){
@@ -150,7 +150,7 @@ inline ptr::SharedPtr<Type, DeleterType>& ptr::SharedPtr<Type, DeleterType>::ope
 }
 
 template<typename Type, typename DeleterType>
-inline ptr::SharedPtr<Type, DeleterType>& ptr::SharedPtr<Type, DeleterType>::operator=(const ptr::SharedPtr<Type, DeleterType>&& ptr){
+inline ptr::SharedPtr<Type, DeleterType>& ptr::SharedPtr<Type, DeleterType>::operator =(const ptr::SharedPtr<Type, DeleterType>&& ptr){
 	if(this != &ptr){
 		free();
 		if(ptr.isValid()){
@@ -161,7 +161,7 @@ inline ptr::SharedPtr<Type, DeleterType>& ptr::SharedPtr<Type, DeleterType>::ope
 }
 
 template<typename Type, typename DeleterType>
-inline ptr::SharedPtr<Type, DeleterType>& ptr::SharedPtr<Type, DeleterType>::operator=(const ptr::WeakPtr<Type, DeleterType>& ptr){
+inline ptr::SharedPtr<Type, DeleterType>& ptr::SharedPtr<Type, DeleterType>::operator =(const ptr::WeakPtr<Type, DeleterType>& ptr){
 	free();
 	if(ptr.isValid()){
 		init(ptr.object, ptr.ref);
@@ -170,7 +170,7 @@ inline ptr::SharedPtr<Type, DeleterType>& ptr::SharedPtr<Type, DeleterType>::ope
 }
 
 template<typename Type, typename DeleterType>
-inline ptr::SharedPtr<Type, DeleterType>& ptr::SharedPtr<Type, DeleterType>::operator=(const ptr::WeakPtr<Type, DeleterType>&& ptr){
+inline ptr::SharedPtr<Type, DeleterType>& ptr::SharedPtr<Type, DeleterType>::operator =(const ptr::WeakPtr<Type, DeleterType>&& ptr){
 	free();
 	if(ptr.isValid()){
 		init(ptr.object, ptr.ref);
@@ -276,7 +276,7 @@ inline ptr::SharedPtr<Type, DeleterType> ptr::WeakPtr<Type, DeleterType>::pin(){
 }
 
 template<typename Type, typename DeleterType>
-inline ptr::WeakPtr<Type, DeleterType>& ptr::WeakPtr<Type, DeleterType>::operator=(const ptr::WeakPtr<Type, DeleterType>& ptr){
+inline ptr::WeakPtr<Type, DeleterType>& ptr::WeakPtr<Type, DeleterType>::operator =(const ptr::WeakPtr<Type, DeleterType>& ptr){
 	if(this != &ptr){
 		free();
 		if(ptr.isValid()){
@@ -287,7 +287,7 @@ inline ptr::WeakPtr<Type, DeleterType>& ptr::WeakPtr<Type, DeleterType>::operato
 }
 
 template<typename Type, typename DeleterType>
-inline ptr::WeakPtr<Type, DeleterType>& ptr::WeakPtr<Type, DeleterType>::operator=(const ptr::WeakPtr<Type, DeleterType>&& ptr){
+inline ptr::WeakPtr<Type, DeleterType>& ptr::WeakPtr<Type, DeleterType>::operator =(const ptr::WeakPtr<Type, DeleterType>&& ptr){
 	if(this != &ptr){
 		free();
 		if(ptr.isValid()){
@@ -298,7 +298,7 @@ inline ptr::WeakPtr<Type, DeleterType>& ptr::WeakPtr<Type, DeleterType>::operato
 }
 
 template<typename Type, typename DeleterType>
-inline ptr::WeakPtr<Type, DeleterType>& ptr::WeakPtr<Type, DeleterType>::operator=(const ptr::SharedPtr<Type, DeleterType>& ptr){
+inline ptr::WeakPtr<Type, DeleterType>& ptr::WeakPtr<Type, DeleterType>::operator =(const ptr::SharedPtr<Type, DeleterType>& ptr){
 	free();
 	if(ptr.isValid()){
 		init(ptr.object, ptr.ref);
@@ -307,7 +307,7 @@ inline ptr::WeakPtr<Type, DeleterType>& ptr::WeakPtr<Type, DeleterType>::operato
 }
 
 template<typename Type, typename DeleterType>
-inline ptr::WeakPtr<Type, DeleterType>& ptr::WeakPtr<Type, DeleterType>::operator=(const ptr::SharedPtr<Type, DeleterType>&& ptr){
+inline ptr::WeakPtr<Type, DeleterType>& ptr::WeakPtr<Type, DeleterType>::operator =(const ptr::SharedPtr<Type, DeleterType>&& ptr){
 	free();
 	if(ptr.isValid()){
 		init(ptr.object, ptr.ref);
@@ -409,27 +409,27 @@ inline ptr::UniquePtr<Type, DeleterType> ptr::UniquePtr<Type, DeleterType>::move
 }
 
 template<typename Type, typename DeleterType>
-inline Type* ptr::UniquePtr<Type, DeleterType>::operator->(){
+inline Type* ptr::UniquePtr<Type, DeleterType>::operator ->(){
 	return get();
 }
 
 template<typename Type, typename DeleterType>
-inline Type* ptr::UniquePtr<Type, DeleterType>::operator->() const{
+inline Type* ptr::UniquePtr<Type, DeleterType>::operator ->() const{
 	return get();
 }
 
 template<typename Type, typename DeleterType>
-inline Type& ptr::UniquePtr<Type, DeleterType>::operator*(){
+inline Type& ptr::UniquePtr<Type, DeleterType>::operator *(){
 	return *get();
 }
 
 template<typename Type, typename DeleterType>
-inline Type& ptr::UniquePtr<Type, DeleterType>::operator*() const{
+inline Type& ptr::UniquePtr<Type, DeleterType>::operator *() const{
 	return *get();
 }
 
 template<typename Type, typename DeleterType>
-inline ptr::UniquePtr<Type, DeleterType>& ptr::UniquePtr<Type, DeleterType>::operator=(ptr::UniquePtr<Type, DeleterType>&& ptr){
+inline ptr::UniquePtr<Type, DeleterType>& ptr::UniquePtr<Type, DeleterType>::operator =(ptr::UniquePtr<Type, DeleterType>&& ptr){
 	if(this != &ptr){
 		if(isValid()){
 			free();

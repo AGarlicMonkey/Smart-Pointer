@@ -22,10 +22,10 @@ namespace ptr{
 
 	/////////DEFAULT DELETER
 	struct DefaultDeleter{
-		void operator()(void* ptr){
+		void operator ()(void* ptr){
 			delete ptr;
 		}
-		void operator()(const void* ptr){
+		void operator ()(const void* ptr){
 			delete ptr;
 		}
 	};
@@ -111,19 +111,19 @@ namespace ptr{
 
 		~SharedPtr();
 
-		Type* operator->();
-		Type* operator->() const;
+		Type* operator ->();
+		Type* operator ->() const;
 
-		Type& operator*();
-		Type& operator*() const;
+		Type& operator *();
+		Type& operator *() const;
 
-		SharedPtr<Type, DeleterType>& operator=(Type* inObject);
+		SharedPtr<Type, DeleterType>& operator =(Type* inObject);
 
-		SharedPtr<Type, DeleterType>& operator=(const SharedPtr<Type, DeleterType>& ptr);
-		SharedPtr<Type, DeleterType>& operator=(const SharedPtr<Type, DeleterType>&& ptr);
+		SharedPtr<Type, DeleterType>& operator =(const SharedPtr<Type, DeleterType>& ptr);
+		SharedPtr<Type, DeleterType>& operator =(const SharedPtr<Type, DeleterType>&& ptr);
 
-		SharedPtr<Type, DeleterType>& operator=(const WeakPtr<Type, DeleterType>& ptr);
-		SharedPtr<Type, DeleterType>& operator=(const WeakPtr<Type, DeleterType>&& ptr);
+		SharedPtr<Type, DeleterType>& operator =(const WeakPtr<Type, DeleterType>& ptr);
+		SharedPtr<Type, DeleterType>& operator =(const WeakPtr<Type, DeleterType>&& ptr);
 
 	protected:
 		virtual void free() override;
@@ -163,11 +163,11 @@ namespace ptr{
 
 		SharedPtr<Type, DeleterType> pin();
 
-		WeakPtr<Type, DeleterType>& operator=(const WeakPtr<Type, DeleterType>& ptr);
-		WeakPtr<Type, DeleterType>& operator=(const WeakPtr<Type, DeleterType>&& ptr);
+		WeakPtr<Type, DeleterType>& operator =(const WeakPtr<Type, DeleterType>& ptr);
+		WeakPtr<Type, DeleterType>& operator =(const WeakPtr<Type, DeleterType>&& ptr);
 
-		WeakPtr<Type, DeleterType>& operator=(const SharedPtr<Type, DeleterType>& ptr);
-		WeakPtr<Type, DeleterType>& operator=(const SharedPtr<Type, DeleterType>&& ptr);
+		WeakPtr<Type, DeleterType>& operator =(const SharedPtr<Type, DeleterType>& ptr);
+		WeakPtr<Type, DeleterType>& operator =(const SharedPtr<Type, DeleterType>&& ptr);
 
 	protected:
 		virtual void free() override;
@@ -220,13 +220,13 @@ namespace ptr{
 
 		UniquePtr<Type, DeleterType> move();
 
-		Type* operator->();
-		Type* operator->() const;
+		Type* operator ->();
+		Type* operator ->() const;
 
-		Type& operator*();
-		Type& operator*() const;
+		Type& operator *();
+		Type& operator *() const;
 
-		UniquePtr<Type, DeleterType>& operator=(UniquePtr<Type, DeleterType>&& ptr);
+		UniquePtr<Type, DeleterType>& operator =(UniquePtr<Type, DeleterType>&& ptr);
 
 	protected:
 		virtual void free() override;
@@ -252,63 +252,63 @@ namespace ptr{
 /////////INLINE INCLUDE
 #include "Ptr.inl"
 
-/////////COMPARISON OPERATORS
+/////////COMPARISON operator S
 //T == T
 template<typename T>
-inline bool operator==(const ptr::PtrBase<T>& lptr, const ptr::PtrBase<T>& rptr){
+inline bool operator ==(const ptr::PtrBase<T>& lptr, const ptr::PtrBase<T>& rptr){
 	return lptr.get() == rptr.get();
 }
 template<typename T>
-inline bool operator==(const ptr::PtrBase<T>& ptr, const T* object){
+inline bool operator ==(const ptr::PtrBase<T>& ptr, const T* object){
 	return ptr.get() == object;
 }
 template<typename T>
-inline bool operator==(const ptr::PtrBase<T>& ptr, const T& object){
+inline bool operator ==(const ptr::PtrBase<T>& ptr, const T& object){
 	return ptr.get() == *object;
 }
 
 //T != T
 template<typename T>
-inline bool operator!=(const ptr::PtrBase<T>& lptr, const ptr::PtrBase<T>& rptr){
+inline bool operator !=(const ptr::PtrBase<T>& lptr, const ptr::PtrBase<T>& rptr){
 	return !(lptr == rptr);
 }
 template<typename T>
-inline bool operator!=(const ptr::PtrBase<T>& ptr, const T* object){
+inline bool operator !=(const ptr::PtrBase<T>& ptr, const T* object){
 	return !(ptr == object);
 }
 template<typename T>
-inline bool operator!=(const ptr::PtrBase<T>& ptr, const T& object){
+inline bool operator !=(const ptr::PtrBase<T>& ptr, const T& object){
 	return !(ptr == object);
 }
 
 //T == U
 template<typename T, typename U>
-inline bool operator==(const ptr::PtrBase<T>& lptr, const ptr::PtrBase<U>& rptr){
+inline bool operator ==(const ptr::PtrBase<T>& lptr, const ptr::PtrBase<U>& rptr){
 	return lptr.get() == rptr.get();
 }
 template<typename T, typename U>
-inline bool operator==(const ptr::PtrBase<T>& ptr, const U* object){
+inline bool operator ==(const ptr::PtrBase<T>& ptr, const U* object){
 	return ptr.get() == object;
 }
 
 //T != U
 template<typename T, typename U>
-inline bool operator!=(const ptr::PtrBase<T>& lptr, const ptr::PtrBase<U>& rptr){
+inline bool operator !=(const ptr::PtrBase<T>& lptr, const ptr::PtrBase<U>& rptr){
 	return !(lptr == rptr);
 }
 template<typename T, typename U>
-inline bool operator!=(const ptr::PtrBase<T>& ptr, const U* object){
+inline bool operator !=(const ptr::PtrBase<T>& ptr, const U* object){
 	return !(ptr == object);
 }
 
 //T == nullptr_t
 template<typename T>
-inline bool operator==(const ptr::PtrBase<T>& ptr, std::nullptr_t object){
+inline bool operator ==(const ptr::PtrBase<T>& ptr, std::nullptr_t object){
 	return ptr.get() == object;
 }
 
 //T != nullptr_t
 template<typename T>
-inline bool operator!=(const ptr::PtrBase<T>& ptr, std::nullptr_t object){
+inline bool operator !=(const ptr::PtrBase<T>& ptr, std::nullptr_t object){
 	return !(ptr == object);
 }
