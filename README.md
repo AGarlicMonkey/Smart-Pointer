@@ -32,7 +32,7 @@ class MyObj{
   public:
   int x;
 };
-ptr::SharedPtr<MyObj> myPtr = ptr::makeShared(new MyObj());
+agm::SharedPtr<MyObj> myPtr = agm::makeShared(new MyObj());
 ```
 
 From this point on you can use the ```SharedPtr``` like a normal C++ raw pointer.
@@ -76,7 +76,7 @@ A ```SharedPtr``` will also be reset once it leaves a scope.
 
 ```C++
 {
-  ptr::SharedPtr<MyObj> myPtr = ptr::makeShared(new MyObj());
+  agm::SharedPtr<MyObj> myPtr = agm::makeShared(new MyObj());
   //myPtr is now valid
   //...
 }
@@ -87,8 +87,8 @@ A ```SharedPtr``` will also be reset once it leaves a scope.
 You can also use a ```SharedPtr``` to initialise another one.
 
 ```C++
-ptr::SharedPtr<MyObj> myPtr1 = ptr::makeShared(new MyObj());
-ptr::SharedPtr<MyObj> myPtr2 = myPtr1;
+agm::SharedPtr<MyObj> myPtr1 = agm::makeShared(new MyObj());
+agm::SharedPtr<MyObj> myPtr2 = myPtr1;
 ```
 
 
@@ -97,21 +97,21 @@ Currently **only SharedPtr** can be cast. This does however support the four cas
 
 ```C++
 //Static
-ptr::SharedPtr<Base> b = ptr::makeShared(new Derived());
-ptr::SharedPtr<Derived> d = ptr::staticCast<Derived>(b);
+agm::SharedPtr<Base> b = agm::makeShared(new Derived());
+agm::SharedPtr<Derived> d = agm::staticCast<Derived>(b);
 
 //Dynamic
-ptr::SharedPtr<Base> b = ptr::makeShared(new Derived());
-ptr::SharedPtr<Derived> d = ptr::dynamicCast<Derived>(b);
+agm::SharedPtr<Base> b = agm::makeShared(new Derived());
+agm::SharedPtr<Derived> d = agm::dynamicCast<Derived>(b);
 
 //Const
-ptr::SharedPtr<int> i = ptr::makeShared(new int(10));
-ptr::SharedPtr<const int> ci = ptr::constCast<const int>(i);
+agm::SharedPtr<int> i = agm::makeShared(new int(10));
+agm::SharedPtr<const int> ci = agm::constCast<const int>(i);
 
 //Reinterpret
 struct S{ int a; };
-ptr::SharedPtr<S> structPtr = ptr::makeShared(new S());
-ptr::SharedPtr<int> intPtr = ptr::reinterpretCast<int>(structPtr);
+agm::SharedPtr<S> structPtr = agm::makeShared(new S());
+agm::SharedPtr<int> intPtr = agm::reinterpretCast<int>(structPtr);
 ```
 
 ### <a name="WP"></a> Weak Pointer
@@ -127,8 +127,8 @@ class MyObj{
   public:
   int x;
 };
-ptr::SharedPtr<MyObj> mySharedPtr = ptr::makeShared(new MyObj());
-ptr::WeakPtr<MyObj> myWeakPtr = mySharedPtr;
+agm::SharedPtr<MyObj> mySharedPtr = agm::makeShared(new MyObj());
+agm::WeakPtr<MyObj> myWeakPtr = mySharedPtr;
 
 if(myWeakPtr){
   myWeakPtr.get()->x += 1;
@@ -136,7 +136,7 @@ if(myWeakPtr){
 }
 
 {
-  ptr::SharedPtr<MyObj> myOtherShared = myWeakPtr.pin();
+  agm::SharedPtr<MyObj> myOtherShared = myWeakPtr.pin();
   //...
 }
 
@@ -161,11 +161,11 @@ class MyObj : public SharedFromThis<MyObj>{
 
 class ChildObj{
   public:
-  ptr::WeakPtr<MyObj> owner;
+  agm::WeakPtr<MyObj> owner;
 };
 
 void MyObj::spawnObj(){
-  ptr::SharedPtr<ChildObj> spawnedChild = ptr::makeShared(new ChildObj());
+  agm::SharedPtr<ChildObj> spawnedChild = agm::makeShared(new ChildObj());
   
   //You can use getWeakThis();
   spawnedChild->owner = getWeakThis();
@@ -178,7 +178,7 @@ void MyObj::spawnObj(){
 
 ```C++
 void MyObj::spawnObj(){
-  ptr::SharedPtr<ChildObj> spawnedChild = ptr::makeShared(new ChildObj());
+  agm::SharedPtr<ChildObj> spawnedChild = agm::makeShared(new ChildObj());
   
   spawnedChild->owner = getWeakThis<DerivedObj>();
   spawnedChild->owner = getSharedThis<DerivedObj>();
@@ -195,7 +195,7 @@ class MyObj{
   int x;
 }
 
-ptr::UniquePtr<MyObj> myUnqiue = ptr::makeUnique(new MyObj());
+agm::UniquePtr<MyObj> myUnqiue = agm::makeUnique(new MyObj());
 
 if(myUnique){
   //...
@@ -213,11 +213,11 @@ myUnique.reset();
 ```UniquePtr```s have a ```move();``` which is how you assign one ```UniquePtr``` to another
 
 ```C++
-ptr::UniquePtr<MyObj> ptr1 = ptr::makeUnique(new MyObj());
+agm::UniquePtr<MyObj> ptr1 = agm::makeUnique(new MyObj());
 
 //ptr1 is now valid
 
-ptr::UniquePtr<MyObj> ptr2 = ptr1.move();
+agm::UniquePtr<MyObj> ptr2 = ptr1.move();
 
 //ptr1 is no longer valid - ptr2 now has ownership and is responsible for the object's life time 
 ```
@@ -240,9 +240,9 @@ struct MyObjDeleter{
   }
 }
 
-ptr::SharedPtr<MyObj, MyObjDeleter> sharedPtr = ptr::makeShared(new MyObj());
+agm::SharedPtr<MyObj, MyObjDeleter> sharedPtr = agm::makeShared(new MyObj());
 sharedPtr.reset(); //Custom deleter called
 
-ptr::UniquePtr<MyObj, MyObjDeleter> uniquePtr = ptr::makeUnique(new MyObj());
+agm::UniquePtr<MyObj, MyObjDeleter> uniquePtr = agm::makeUnique(new MyObj());
 uniquePtr.reset(); //Custom deleter called
 ```
