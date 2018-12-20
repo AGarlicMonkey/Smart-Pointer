@@ -1,6 +1,6 @@
 #pragma once
 
-namespace ptr{
+namespace agm{
 	/////////COUNTER
 	class Counter{
 		//VARIALBES
@@ -255,60 +255,60 @@ namespace ptr{
 /////////COMPARISON OPERATORS
 //T == T
 template<typename T>
-inline bool operator ==(const ptr::PtrBase<T>& lptr, const ptr::PtrBase<T>& rptr){
+inline bool operator ==(const agm::PtrBase<T>& lptr, const agm::PtrBase<T>& rptr){
 	return lptr.get() == rptr.get();
 }
 template<typename T>
-inline bool operator ==(const ptr::PtrBase<T>& ptr, const T* object){
+inline bool operator ==(const agm::PtrBase<T>& ptr, const T* object){
 	return ptr.get() == object;
 }
 template<typename T>
-inline bool operator ==(const ptr::PtrBase<T>& ptr, const T& object){
+inline bool operator ==(const agm::PtrBase<T>& ptr, const T& object){
 	return ptr.get() == *object;
 }
 
 //T != T
 template<typename T>
-inline bool operator !=(const ptr::PtrBase<T>& lptr, const ptr::PtrBase<T>& rptr){
+inline bool operator !=(const agm::PtrBase<T>& lptr, const agm::PtrBase<T>& rptr){
 	return !(lptr == rptr);
 }
 template<typename T>
-inline bool operator !=(const ptr::PtrBase<T>& ptr, const T* object){
+inline bool operator !=(const agm::PtrBase<T>& ptr, const T* object){
 	return !(ptr == object);
 }
 template<typename T>
-inline bool operator !=(const ptr::PtrBase<T>& ptr, const T& object){
+inline bool operator !=(const agm::PtrBase<T>& ptr, const T& object){
 	return !(ptr == object);
 }
 
 //T == U
 template<typename T, typename U>
-inline bool operator ==(const ptr::PtrBase<T>& lptr, const ptr::PtrBase<U>& rptr){
+inline bool operator ==(const agm::PtrBase<T>& lptr, const agm::PtrBase<U>& rptr){
 	return lptr.get() == rptr.get();
 }
 template<typename T, typename U>
-inline bool operator ==(const ptr::PtrBase<T>& ptr, const U* object){
+inline bool operator ==(const agm::PtrBase<T>& ptr, const U* object){
 	return ptr.get() == object;
 }
 
 //T != U
 template<typename T, typename U>
-inline bool operator !=(const ptr::PtrBase<T>& lptr, const ptr::PtrBase<U>& rptr){
+inline bool operator !=(const agm::PtrBase<T>& lptr, const agm::PtrBase<U>& rptr){
 	return !(lptr == rptr);
 }
 template<typename T, typename U>
-inline bool operator !=(const ptr::PtrBase<T>& ptr, const U* object){
+inline bool operator !=(const agm::PtrBase<T>& ptr, const U* object){
 	return !(ptr == object);
 }
 
 //T == nullptr_t
 template<typename T>
-inline bool operator ==(const ptr::PtrBase<T>& ptr, std::nullptr_t object){
+inline bool operator ==(const agm::PtrBase<T>& ptr, std::nullptr_t object){
 	return ptr.get() == object;
 }
 
 //T != nullptr_t
 template<typename T>
-inline bool operator !=(const ptr::PtrBase<T>& ptr, std::nullptr_t object){
+inline bool operator !=(const agm::PtrBase<T>& ptr, std::nullptr_t object){
 	return !(ptr == object);
 }

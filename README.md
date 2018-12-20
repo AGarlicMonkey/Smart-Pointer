@@ -1,7 +1,7 @@
 # Smart Pointer
 This is a C++ reference counted smart pointer solution.
 
-Version 1.0.5
+Version 1.0.6
 
 **_Disclaimer_**
 
@@ -26,7 +26,7 @@ This was a project that was started for educational purposes and will be maintai
 A ```SharedPtr``` is a way to keep a strong reference to an object - while at least one ```SharedPtr``` is pointing to an object that object will not be deleted.
 
 #### Usage
-You can initialise an ```SharedPtr``` like so:
+You can initialise a ```SharedPtr``` like so:
 ```C++
 class MyObj{
   public:
