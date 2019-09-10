@@ -1,5 +1,7 @@
 #pragma once
 
+#include <type_traits>
+
 namespace agm{
 	/////////COUNTER
 	class Counter{
@@ -177,6 +179,11 @@ namespace agm{
 	};
 
 	/////////SHARED FROM THIS
+	template<typename T, typename = void>
+	struct hasSharedFromThisType : std::false_type{};
+	template<typename T>
+	struct hasSharedFromThisType<T, std::void_t<typename T::SharedFromThisType>> : std::true_type{};
+
 	template<typename Type>
 	class SharedFromThis{
 		typedef Type SharedFromThisType;
@@ -194,9 +201,9 @@ namespace agm{
 		template<typename OtherType> SharedPtr<OtherType> getSharedThis() const;
 
 	private:
-		template<typename Type>
-		friend void enable(typename Type::SharedFromThisType* ptr, SharedPtr<Type>* shptr);
-		friend void enable(const volatile void* ptr, const volatile void* shptr);
+		template<typename Type, std::enable_if_t<hasSharedFromThisType<Type>::value, int> = 0>
+		friend void enable(Type* ptr, SharedPtr<Type>* shptr);
+		friend void enable(...);
 
 		template<typename PtrType>
 		void doEnable(Type* ptr, SharedPtr<PtrType>* shptr);

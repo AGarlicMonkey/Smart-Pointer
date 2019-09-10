@@ -22,7 +22,7 @@ inline agm::PtrBase<Type, DeleterType>::operator bool() const{
 /////////REFERENCE POINTER BASE
 template<typename Type, typename DeleterType>
 inline bool agm::RefPtrBase<Type, DeleterType>::isValid() const{
-	return (ref && ref->check() > 0) ? object != nullptr : false;
+	return (ref && ref->check() > 0) ? this->object != nullptr : false;
 }
 
 /////////SHARED POINTER
@@ -109,27 +109,27 @@ inline agm::SharedPtr<Type, DeleterType>::~SharedPtr(){
 
 template<typename Type, typename DeleterType>
 inline Type* agm::SharedPtr<Type, DeleterType>::operator ->(){
-	return get();
+	return this->get();
 }
 
 template<typename Type, typename DeleterType>
 inline Type* agm::SharedPtr<Type, DeleterType>::operator ->() const{
-	return get();
+	return this->get();
 }
 
 template<typename Type, typename DeleterType>
 inline Type& agm::SharedPtr<Type, DeleterType>::operator *(){
-	return *get();
+	return *this->get();
 }
 
 template<typename Type, typename DeleterType>
 inline Type& agm::SharedPtr<Type, DeleterType>::operator *() const{
-	return *get();
+	return *this->get();
 }
 
 template<typename Type, typename DeleterType>
 inline agm::SharedPtr<Type, DeleterType>& agm::SharedPtr<Type, DeleterType>::operator =(Type* inObject){
-	if(object != inObject){
+	if(this->object != inObject){
 		free();
 		if(inObject){
 			init(inObject);
@@ -180,25 +180,25 @@ inline agm::SharedPtr<Type, DeleterType>& agm::SharedPtr<Type, DeleterType>::ope
 
 template<typename Type, typename DeleterType>
 inline void agm::SharedPtr<Type, DeleterType>::free(){
-	if(ref && ref->release() == 0){
-		deleter(get());
-		if(ref->fullCheck() == 0){
-			delete ref;
+	if(this->ref && this->ref->release() == 0){
+		this->deleter(this->get());
+		if(this->ref->fullCheck() == 0){
+			delete this->ref;
 		}
 	}
-	object = nullptr;
-	ref = nullptr;
+	this->object = nullptr;
+	this->ref = nullptr;
 }
 
 template<typename Type, typename DeleterType>
 inline void agm::SharedPtr<Type, DeleterType>::init(Type* inObject, Counter* inRef){
-	object = inObject;
+	this->object = inObject;
 	if(inRef){
-		ref = inRef;
-		ref->grab();
+		this->ref = inRef;
+		this->ref->grab();
 	} else{
-		ref = new Counter();
-		ref->grab();
+		this->ref = new Counter();
+		this->ref->grab();
 
 		enable(inObject, this);
 	}
@@ -317,19 +317,19 @@ inline agm::WeakPtr<Type, DeleterType>& agm::WeakPtr<Type, DeleterType>::operato
 
 template<typename Type, typename DeleterType>
 inline void agm::WeakPtr<Type, DeleterType>::free(){
-	if(ref && ref->weakRelease() == 0 && ref->fullCheck() == 0){
-		delete ref;
+	if(this->ref && this->ref->weakRelease() == 0 && this->ref->fullCheck() == 0){
+		delete this->ref;
 	}
-	object = nullptr;
-	ref = nullptr;
+	this->object = nullptr;
+	this->ref = nullptr;
 }
 
 template<typename Type, typename DeleterType>
 inline void agm::WeakPtr<Type, DeleterType>::init(Type* inObject, Counter* inRef){
-	object = inObject;
+	this->object = inObject;
 	if(inRef){
-		ref = inRef;
-		ref->weakGrab();
+		this->ref = inRef;
+		this->ref->weakGrab();
 	}
 }
 
@@ -357,14 +357,14 @@ inline agm::SharedPtr<OtherType> agm::SharedFromThis<Type>::getSharedThis() cons
 }
 
 namespace agm{
-	template<typename Type>
-	inline void enable(typename Type::SharedFromThisType* ptr, agm::SharedPtr<Type>* shptr){
+	template<typename Type, std::enable_if_t<hasSharedFromThisType<Type>::value, int>>
+	inline void enable(Type* ptr, SharedPtr<Type>* shptr){
 		if(ptr){
 			ptr->doEnable(ptr, shptr);
 		}
 	}
 
-	inline void enable(const void* ptr, const void* shptr){
+	inline void enable(...){
 		//Not of type SharedFromThis - Do nothing
 	}
 }
@@ -380,19 +380,19 @@ inline void agm::SharedFromThis<Type>::doEnable(Type* ptr, agm::SharedPtr<PtrTyp
 /////////UNIQUE POINTER
 template<typename Type, typename DeleterType>
 inline agm::UniquePtr<Type, DeleterType>::UniquePtr(Type* inObject){
-	object = inObject;
+	this->object = inObject;
 }
 
 template<typename Type, typename DeleterType>
 inline agm::UniquePtr<Type, DeleterType>::UniquePtr(agm::UniquePtr<Type, DeleterType>&& ptr){
-	object = ptr.object;
+	this->object = ptr.object;
 	ptr.object = nullptr;
 }
 
 template<typename Type, typename DeleterType>
 template<typename OtherType>
 inline agm::UniquePtr<Type, DeleterType>::UniquePtr(agm::UniquePtr<OtherType, DeleterType>&& ptr){
-	object = ptr.object;
+	this->object = ptr.object;
 	ptr.object = nullptr;
 }
 
@@ -403,38 +403,38 @@ inline agm::UniquePtr<Type, DeleterType>::~UniquePtr(){
 
 template<typename Type, typename DeleterType>
 inline agm::UniquePtr<Type, DeleterType> agm::UniquePtr<Type, DeleterType>::move(){
-	UniquePtr<Type, DeleterType> out(object);
-	object = nullptr;
+	UniquePtr<Type, DeleterType> out(this->object);
+	this->object = nullptr;
 	return out;
 }
 
 template<typename Type, typename DeleterType>
 inline Type* agm::UniquePtr<Type, DeleterType>::operator ->(){
-	return get();
+	return this->get();
 }
 
 template<typename Type, typename DeleterType>
 inline Type* agm::UniquePtr<Type, DeleterType>::operator ->() const{
-	return get();
+	return this->get();
 }
 
 template<typename Type, typename DeleterType>
 inline Type& agm::UniquePtr<Type, DeleterType>::operator *(){
-	return *get();
+	return *this->get();
 }
 
 template<typename Type, typename DeleterType>
 inline Type& agm::UniquePtr<Type, DeleterType>::operator *() const{
-	return *get();
+	return *this->get();
 }
 
 template<typename Type, typename DeleterType>
 inline agm::UniquePtr<Type, DeleterType>& agm::UniquePtr<Type, DeleterType>::operator =(agm::UniquePtr<Type, DeleterType>&& ptr){
 	if(this != &ptr){
-		if(isValid()){
+		if(this->isValid()){
 			free();
 		}
-		object = ptr.object;
+		this->object = ptr.object;
 		ptr.object = nullptr;
 	}
 	return *this;
@@ -442,10 +442,10 @@ inline agm::UniquePtr<Type, DeleterType>& agm::UniquePtr<Type, DeleterType>::ope
 
 template<typename Type, typename DeleterType>
 inline void agm::UniquePtr<Type, DeleterType>::free(){
-	if(isValid()){
-		deleter(get());
+	if(this->isValid()){
+		this->deleter(this->get());
 	}
-	object = nullptr;
+	this->object = nullptr;
 }
 
 /////////HELPER FUNCTIONS
